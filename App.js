@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Button, View, TextInput, Text } from 'react-native';
 import { loginUser } from './src/api.js';
