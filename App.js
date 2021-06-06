@@ -4,6 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { LoginScreen } from './src/LoginScreen/login.js';
 import { AppRegistry } from 'react-native';
+import { VerifyScreen } from './src/VerifyScreen/verifyEmail.js';
 
 const Stack = createStackNavigator();
 

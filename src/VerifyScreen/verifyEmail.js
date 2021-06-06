@@ -4,7 +4,7 @@ import { signUpUser } from '../api.js';
 import { styles } from '../styles.js';
 import { validEmail, validPassword, validName } from '../validators.js';
 
-export function SignUpScreen({ navigation }) {
+export function VerifyScreen({ navigation }) {
     var [emailAddr, changeEmail] = React.useState("")
     var [userPass, changePassword] = React.useState("")
     var [userName, changeName] = React.useState("")
@@ -12,8 +12,8 @@ export function SignUpScreen({ navigation }) {
     var [errorShown, setErrorShown] = React.useState(false);
     var [loginMessage, changeLogMessage] = React.useState("hahaha")
 
-    const string1 = "Already have an account?"
-    const string2 = " Log In"
+    const string1 = "Didn't recieve a code?"
+    const string2 = " Resend"
 
     return (
         <View style={styles.container}>
@@ -24,33 +24,27 @@ export function SignUpScreen({ navigation }) {
             </View>
             <View style={styles.contentMargin}>
                 <Text style={{ alignSelf: 'center', fontSize: 48 }}>
-                    Sign Up!
+                    Verify your
+                </Text>
+                <Text style={{ alignSelf: 'center', fontSize: 48 }}>
+                    email.
                 </Text>
             </View>
             <View style={styles.contentMargin}>
-                <TextInput
-                    style={styles.textInput}
-                    onChangeText={changeName}
-                    value={userName}
-                    placeholder=" Name"
-                />
+                <Text style={{ alignSelf: 'center', fontSize: 18 }}>
+                    Enter the 6-digit code sent to your
+                </Text>
+                <Text style={{ alignSelf: 'center', fontSize: 18 }}>
+                    email.
+                </Text>
             </View>
-            <View style={styles.contentMargin}>
-                <TextInput
-                    style={styles.textInput}
-                    onChangeText={changeEmail}
-                    value={emailAddr}
-                    placeholder=" Email Address"
-                />
-            </View>
-            <View style={styles.contentMargin}>
-                <TextInput
-                    style={styles.textInput}
-                    onChangeText={changePassword}
-                    value={userPass}
-                    placeholder=" Password"
-                    secureTextEntry={true}
-                />
+            <View style={{flexDirection: "row" }}>
+                <View style={{marginLeft: 12, marginTop: 15, marginBottom: 15, marginRight: 6}}>
+                    <TextInput style={{ borderWidth: 1, width: 48, height: 80, borderRadius: 10 }} />
+                </View>
+                <View style={{marginLeft: 6, marginTop: 15, marginBottom: 15, marginRight: 6}}>
+                    <TextInput style={{ borderWidth: 1, width: 48, height: 80, borderRadius: 10 }} />
+                </View>
             </View>
             <View style={styles.contentMargin}>
                 <TouchableOpacity
@@ -82,7 +76,7 @@ export function SignUpScreen({ navigation }) {
                         }
                     }}
                 >
-                    <Text style={styles.fillButtonText}>Sign Up</Text>
+                    <Text style={styles.fillButtonText}>Verify</Text>
                 </TouchableOpacity>
             </View>
             <View style={styles.contentMargin, { flexDirection: 'row', justifyContent: 'center' }}>

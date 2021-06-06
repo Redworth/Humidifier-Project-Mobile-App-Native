@@ -28,7 +28,7 @@ export const styles = StyleSheet.create({
             height: 5
         },
         elevation: 4,
-        borderRadius: 10
+        borderRadius: 10,
     },
     fillButtonText: {
         color: '#FFFFFF',

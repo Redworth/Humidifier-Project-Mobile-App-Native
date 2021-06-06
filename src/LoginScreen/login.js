@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
+import { View, TextInput, Text, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
 import { loginUser } from '../api.js';
 import { styles } from '../styles.js';
 import { validEmail, validPassword } from '../validators.js';
@@ -9,6 +9,7 @@ export function LoginScreen({navigation}) {
     var [userPass, changePassword] = React.useState("")
     var [userName, changeName] = React.useState("")
 
+    var [errorShown, setErrorShown] = React.useState(false);
     var [loginMessage, changeLogMessage] = React.useState("")
 
     const string1 = "Need an account?"
@@ -44,26 +45,26 @@ export function LoginScreen({navigation}) {
                 />
             </View>
             <View style={styles.contentMargin}>
-                <TouchableOpacity
-                    style={styles.fillButton}
+                <TouchableOpacity style={styles.fillButton}
                     onPress={function () {
                         var passwordValidate = validPassword(userPass)
                         var emailValidate = validEmail(emailAddr)
 
                         if (emailValidate != "Ok") {
                             changeLogMessage(emailValidate);
+                            setErrorShown(true)
                         }
                         else if (passwordValidate != "Ok") {
                             changeLogMessage(passwordValidate)
+                            setErrorShown(true)
                         }
                         else {
                             loginUser(emailAddr, userPass)
                             changeEmail("")
                             changePassword("")
-                            changeLogMessage("")
+                            setErrorShown(False)
                         }
-                    }}
-                >
+                    }}>
                     <Text style={styles.fillButtonText}>Log In</Text>
                 </TouchableOpacity>
             </View>
@@ -77,11 +78,15 @@ export function LoginScreen({navigation}) {
                     </Text>
                 </TouchableOpacity>
             </View>
-            <View style={styles.contentMargin}>
-                <Text style={{ alignSelf: 'center', color: "#ff0000" }}>
-                    {loginMessage}
-                </Text>
-            </View>
+            {
+                errorShown ? (
+                    <View style={styles.contentMargin}>
+                        <Text style={{ alignSelf: 'center', color: "#ff0000" }}>
+                            {loginMessage}
+                        </Text>
+                    </View>
+                ) : null
+            }
         </View>
     );
 }
