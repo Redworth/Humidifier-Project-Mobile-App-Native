@@ -62,7 +62,7 @@ export function LoginScreen({navigation}) {
                             loginUser(emailAddr, userPass)
                             changeEmail("")
                             changePassword("")
-                            setErrorShown(False)
+                            setErrorShown(false)
                         }
                     }}>
                     <Text style={styles.fillButtonText}>Log In</Text>
