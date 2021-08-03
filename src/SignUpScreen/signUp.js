@@ -2,7 +2,7 @@ import React from 'react';
 import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import { signUpUser } from '../api.js';
 import { styles } from '../styles.js';
-import { validEmail, validPassword, validName } from '../validators.js';
+import { validEmail, validPassword, validName, availName } from '../validators.js';
 
 export function SignUpScreen({ navigation }) {
     var [emailAddr, changeEmail] = React.useState("")
@@ -32,7 +32,7 @@ export function SignUpScreen({ navigation }) {
                     style={styles.textInput}
                     onChangeText={changeName}
                     value={userName}
-                    placeholder=" Name"
+                    placeholder=" Username"
                 />
             </View>
             <View style={styles.contentMargin}>
@@ -59,13 +59,20 @@ export function SignUpScreen({ navigation }) {
                         var emailValidate = validEmail(emailAddr)
                         var passwordValidate = validPassword(userPass)
                         var nameValidate = validName(userName)
+                        var availableName = availName(userName)
+
+                        console.log(availableName)
 
                         if (nameValidate != "Ok") {
                             changeLogMessage(nameValidate)
                             setErrorShown(true)
                         }
+                        else if (availableName != "Ok") {
+                            changeLogMessage(availableName)
+                            setErrorShown(true)
+                        }
                         else if (emailValidate != "Ok") {
-                            changeLogMessage(emailValidate);
+                            changeLogMessage(emailValidate)
                             setErrorShown(true)
                         }
                         else if (passwordValidate != "Ok") {
