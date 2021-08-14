@@ -3,7 +3,6 @@ import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import { signUpUser } from '../api.js';
 import { styles } from '../styles.js';
 import { validEmail, validPassword, validName, availName } from '../validators.js';
-import { useGlobalValidUsername } from '../validUsername.js';
 
 export function SignUpScreen({ navigation }) {
     var [emailAddr, changeEmail] = React.useState("")
@@ -15,8 +14,6 @@ export function SignUpScreen({ navigation }) {
 
     const string1 = "Already have an account?"
     const string2 = " Log In"
-
-    const validUser = useGlobalValidUsername()
 
     return (
         <View style={styles.container}>
@@ -58,18 +55,18 @@ export function SignUpScreen({ navigation }) {
             <View style={styles.contentMargin}>
                 <TouchableOpacity
                     style={styles.fillButton}
-                    onPress={function () {
+                    onPress={async function () {
                         var emailValidate = validEmail(emailAddr)
                         var passwordValidate = validPassword(userPass)
                         var nameValidate = validName(userName)
-                        availName(userName)
-
+                        var availValidate = await availName(userName)
+                        
                         if (nameValidate != "Ok") {
                             changeLogMessage(nameValidate)
                             setErrorShown(true)
                         }
-                        else if (validUser.isValid != "Ok") {
-                            changeLogMessage(validUser.isValid)
+                        else if (availValidate != "Ok") {
+                            changeLogMessage(availValidate)
                             setErrorShown(true)
                         }
                         else if (emailValidate != "Ok") {
@@ -106,7 +103,7 @@ export function SignUpScreen({ navigation }) {
             {
                 errorShown ? (
                     <View style={styles.contentMargin}>
-                        <Text style={{ alignSelf: 'center', color: "#ff0000" }}>
+                        <Text style={{ alignSelf: 'center', color: "#ff0000"}}>
                             {loginMessage}
                         </Text>
                     </View>

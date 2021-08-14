@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { accessGlobalValidUsername } from './validUsername'
 
 export function validEmail(email) {
     const re = /\S+@\S+\.\S+/
@@ -23,47 +22,25 @@ export function validName(name) {
     else return "Ok"
 }
 
-export function availName(username) {
+export async function availName(username) {
     const data = {
         "username": username
     }
-
-    //console.log(data)
     //const url = "https://iot-backend-dev-dev-rohit-karthik.cloud.okteto.net/create-user"
 
     const url = "http://10.0.0.158:8000/get-users"
 
-    requestPost(function (response) {
-        //console.log(response)
-        return response
-    })
 
-    function requestPost(callbackFunc) {
-        axios({
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            url: url,
-            body: JSON.stringify(data)
-        }
-        ).then(
-            function (resdata) {
-                const checkData = {
-                    "Result": "Success"
-                }
-                console.log(resdata.data)
-                if (resdata == JSON.stringify(checkData)) {
-                    callbackFunc("Username already exists.")
-                    accessGlobalValidUsername().setFalse()
-                }
-                else {
-                    callbackFunc("Ok")
-                    accessGlobalValidUsername().setTrue()
-                }
-            }
-        )
+    const response = await axios.post(url, data)
+
+    const checkData = {
+        "Result": "Success"
     }
-
+    
+    if (JSON.stringify(response.data) == JSON.stringify(checkData)) {
+        return "Username already exists."
+    }
+    else {
+        return "Ok"
+    }
 }

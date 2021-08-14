@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, Text, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
 
-export function HomeScreen() {
+export function DevicesScreen() {
 
     return (
         <View>

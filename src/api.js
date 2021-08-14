@@ -1,42 +1,36 @@
 import { firebaseConn } from './config.js';
 import { accessGlobalIsLoggedIn } from './loggedIn.js';
-import React from 'react'
 
-export async function signUpUser(username, email, password) {
+export async function signUpUser(email, password) {
     // register new user
-    await firebaseConn.auth().createUserWithEmailAndPassword(email, password)
-        .then(
-            accessGlobalIsLoggedIn().setTrue()
-        )
-        .catch(
-            function (error) {
-                console.log(error.message)
-            }
-        )
-    
-    //const url = "https://iot-backend-dev-dev-rohit-karthik.cloud.okteto.net/create-user"
-    const url = "http://10.0.0.158:8000/get-users"
-
-    const data = {
-        "username": username
+    try {
+        await firebaseConn.auth().createUserWithEmailAndPassword(email, password)
+        accessGlobalIsLoggedIn().setTrue()
+        return "Ok"
     }
-
-    const response = await fetch(url, {
-            method: 'POST',
-            body: JSON.stringify(data)
+    catch (err){
+        if (err.message == "The password is invalid or the user does not have a password."){
+            return "Incorrect password."
         }
-    )
+        else {
+            return err.message
+        }
+    }
 }
 
 export async function loginUser(email, password) {
-
-    await firebaseConn.auth().signInWithEmailAndPassword(email, password)
-        .then(
-            accessGlobalIsLoggedIn().setTrue()
-        )
-        .catch(
-            function (error) {
-                console.log(error.message)
-            }
-        )
+    // login users
+    try {
+        await firebaseConn.auth().signInWithEmailAndPassword(email, password)
+        accessGlobalIsLoggedIn().setTrue()
+        return "Ok"
+    }
+    catch (err){
+        if (err.message == "The password is invalid or the user does not have a password."){
+            return "Incorrect password."
+        }
+        else {
+            return err.message
+        }
+    }
 }

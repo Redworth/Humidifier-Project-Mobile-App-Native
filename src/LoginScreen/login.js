@@ -46,7 +46,7 @@ export function LoginScreen({navigation}) {
             </View>
             <View style={styles.contentMargin}>
                 <TouchableOpacity style={styles.fillButton}
-                    onPress={function () {
+                    onPress={async function () {
                         var passwordValidate = validPassword(userPass)
                         var emailValidate = validEmail(emailAddr)
 
@@ -59,10 +59,17 @@ export function LoginScreen({navigation}) {
                             setErrorShown(true)
                         }
                         else {
-                            loginUser(emailAddr, userPass)
-                            changeEmail("")
-                            changePassword("")
-                            setErrorShown(false)
+                            var res = await loginUser(emailAddr, userPass)
+                            console.log(res)
+                            if (res != "Ok") {
+                                changeLogMessage(res)
+                                setErrorShown(true)
+                            }
+                            else {
+                                changeEmail("")
+                                changePassword("")
+                                setErrorShown(false)
+                            }
                         }
                     }}>
                     <Text style={styles.fillButtonText}>Log In</Text>
@@ -81,7 +88,7 @@ export function LoginScreen({navigation}) {
             {
                 errorShown ? (
                     <View style={styles.contentMargin}>
-                        <Text style={{ alignSelf: 'center', color: "#ff0000" }}>
+                        <Text style={{ alignSelf: 'center', color: "#ff0000"}}>
                             {loginMessage}
                         </Text>
                     </View>
