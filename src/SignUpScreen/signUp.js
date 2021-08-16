@@ -3,6 +3,7 @@ import { View, TextInput, Text, TouchableOpacity, Image } from 'react-native';
 import { signUpUser } from '../api.js';
 import { styles } from '../styles.js';
 import { validEmail, validPassword, validName, availName } from '../validators.js';
+import { accessGlobalIsLoggedIn } from '../loggedIn';
 
 export function SignUpScreen({ navigation }) {
     var [emailAddr, changeEmail] = React.useState("")
@@ -84,6 +85,7 @@ export function SignUpScreen({ navigation }) {
                             changeName("")
                             changeLogMessage("")
                             setErrorShown(false)
+                            accessGlobalIsLoggedIn().setTrue()
                         }
                     }}
                 >

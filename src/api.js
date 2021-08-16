@@ -1,11 +1,9 @@
 import { firebaseConn } from './config.js';
-import { accessGlobalIsLoggedIn } from './loggedIn.js';
 
 export async function signUpUser(email, password) {
     // register new user
     try {
         await firebaseConn.auth().createUserWithEmailAndPassword(email, password)
-        accessGlobalIsLoggedIn().setTrue()
         return "Ok"
     }
     catch (err){
@@ -22,7 +20,6 @@ export async function loginUser(email, password) {
     // login users
     try {
         await firebaseConn.auth().signInWithEmailAndPassword(email, password)
-        accessGlobalIsLoggedIn().setTrue()
         return "Ok"
     }
     catch (err){

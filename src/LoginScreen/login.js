@@ -3,6 +3,7 @@ import { View, TextInput, Text, TouchableOpacity, Image, TouchableHighlight } fr
 import { loginUser } from '../api.js';
 import { styles } from '../styles.js';
 import { validEmail, validPassword } from '../validators.js';
+import { accessGlobalIsLoggedIn } from '../loggedIn';
 
 export function LoginScreen({navigation}) {
     var [emailAddr, changeEmail] = React.useState("")
@@ -60,7 +61,6 @@ export function LoginScreen({navigation}) {
                         }
                         else {
                             var res = await loginUser(emailAddr, userPass)
-                            console.log(res)
                             if (res != "Ok") {
                                 changeLogMessage(res)
                                 setErrorShown(true)
@@ -69,6 +69,7 @@ export function LoginScreen({navigation}) {
                                 changeEmail("")
                                 changePassword("")
                                 setErrorShown(false)
+                                accessGlobalIsLoggedIn().setTrue()
                             }
                         }
                     }}>
