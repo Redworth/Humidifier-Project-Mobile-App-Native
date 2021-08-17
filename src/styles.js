@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet, Dimensions } from 'react-native'
 
 export const styles = StyleSheet.create({
     container: {
@@ -36,3 +36,21 @@ export const styles = StyleSheet.create({
         fontSize: 18
     }
 });
+
+export const devicesPageStyles = StyleSheet.create({
+    fillButton: {
+        padding: 15,
+        margin: 10,
+        marginRight: 5,
+        marginLeft: 5,
+        shadowRadius: 24,
+        shadowOffset: {
+            width: 0,
+            height: 4
+        },
+        width: Dimensions.get('window').width / 2.1739130435,
+        height: Dimensions.get('window').height / 3.5,
+        elevation: 24,
+        borderRadius: 25,
+    }
+})

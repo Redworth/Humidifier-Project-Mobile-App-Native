@@ -8,7 +8,7 @@ import { useGlobalIsLoggedIn } from './src/loggedIn.js';
 import { DevicesScreen } from './src/DevicesScreen/devices'
 import { AutomationsScreen } from './src/AutomationsScreen/automations'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useColorScheme } from 'react-native';
+import { useColorScheme, StatusBar, Platform } from 'react-native';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -57,6 +57,10 @@ export function LoggedInScreens() {
             drawerLabelStyle: {
               fontSize: 18,
             },
+            headerStyle: {
+              height: StatusBar.currentHeight + 40,
+            },
+            headerTitleAlign: 'center',
             drawerActiveTintColor: "#FE0000"
           }}>
         <Drawer.Screen name="Devices" component={DevicesScreen} />
@@ -65,21 +69,3 @@ export function LoggedInScreens() {
     </NavigationContainer>
   )
 }
-
-/*
- <Stack.Navigator headerMode="none">
-        {
-          isLoggedIn.isLoggedInVal ? (
-            <Drawer.Navigator initialRouteName="Devices">
-              <Drawer.Screen name="Devices" component={DevicesScreen} />
-              <Drawer.Screen name="Automations" component={AutomationsScreen} />
-            </Drawer.Navigator>
-          ) : (
-            <>
-              <Stack.Screen name="SignIn" component={SignUpScreen} />
-              <Stack.Screen name="Login" component={LoginScreen} />
-            </>
-          )
-        }
-      </Stack.Navigator>
-*/
