@@ -2,17 +2,17 @@ import React from 'react';
 import { ScrollView, Text, Pressable, Image, Dimensions, TouchableOpacity, Icon, View, FlatList } from 'react-native';
 import { devicesPageStyles } from '../styles.js';
 
-export function DevicesScreen() {
-    const window = Dimensions.get('window')
+export function DevicesScreen({ navigation }) {
     return (
-        <ScrollView contentContainerStyle={{ display: "flex", flexDirection: 'row', flexWrap: "wrap", width: window.width, height: window.height - 40 }}>
+        <View>
+            <ScrollView contentContainerStyle={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap' }}>
                 <Pressable style={({ pressed }) => [
                     devicesPageStyles.fillButton,
                     {
                         backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                        marginLeft: 10
+                        marginLeft: 10,
                     }]}
-                    onPress={() => console.log('test')}
+                    onPress={() => navigation.navigate('ActiveDevice')}
                 >
                     <Text style={{ fontSize: 24 }}>Rohit's Humidifier</Text>
                     <Image
@@ -118,30 +118,33 @@ export function DevicesScreen() {
                         style={{ margin: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
                     />
                 </Pressable>
-                <TouchableOpacity
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        width: 150,
-                        height: 50,
-                        elevation: 4,
-                        shadowRadius: 4,
-                        shadowOffset: {
-                            width: 0,
-                            height: 4
-                        },
-                        position: 'absolute',
-                        bottom: 10,
-                        right: 10,
-                        height: 70,
-                        backgroundColor: '#fe0000',
-                        borderRadius: 100,
-                        display: 'flex',
-                        flexDirection: 'row'
-                    }}
-                >
-                    <Text>+</Text>
-                </TouchableOpacity>
-        </ScrollView>
+            </ScrollView>
+            <Pressable
+                style={({ pressed }) => ({
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: 150,
+                    height: 50,
+                    elevation: 4,
+                    shadowRadius: 4,
+                    shadowOffset: {
+                        width: 0,
+                        height: 4
+                    },
+                    position: 'absolute',
+                    bottom: 10,
+                    right: 10,
+                    backgroundColor: '#fe0000',
+                    borderRadius: 100,
+                    display: 'flex',
+                    flexDirection: 'row',
+                    resizeMode: 'contain',
+                    backgroundColor: pressed ? "#fecccc" : "#FE0000"
+                })}
+                children={({ pressed }) => (
+                    <Text style={{ fontSize: 18, color: pressed ? "#FE0000" : '#FFFFFF' }}>+ Add a Device</Text>
+                )}
+            />
+        </View>
     );
 }
