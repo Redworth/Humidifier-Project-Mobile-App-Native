@@ -3,9 +3,14 @@ import { ScrollView, Text, Pressable, Image, Dimensions, TouchableOpacity, Icon,
 import { devicesPageStyles } from '../styles.js';
 
 export function DevicesScreen({ navigation }) {
-    return (
-        <View>
-            <ScrollView contentContainerStyle={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap' }}>
+    var count = 0;
+    var arrDevices = []
+
+    for (var i = 0; i < 10; i++) {
+        count += 1;
+
+        if (count % 2 != 0) {
+            arrDevices.push(
                 <Pressable style={({ pressed }) => [
                     devicesPageStyles.fillButton,
                     {
@@ -13,6 +18,7 @@ export function DevicesScreen({ navigation }) {
                         marginLeft: 10,
                     }]}
                     onPress={() => navigation.navigate('ActiveDevice')}
+                    key={count}
                 >
                     <Text style={{ fontSize: 24 }}>Rohit's Humidifier</Text>
                     <Image
@@ -20,104 +26,32 @@ export function DevicesScreen({ navigation }) {
                         style={{ marginTop: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
                     />
                 </Pressable>
+            );
+        }
+        else {
+            arrDevices.push(
                 <Pressable style={({ pressed }) => [
                     devicesPageStyles.fillButton,
                     {
                         backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                        marginRight: 10
+                        marginRight: 10,
                     }]}
-                    onPress={() => console.log('test')}
+                    onPress={() => navigation.navigate('ActiveDevice')}
+                    key={count}
                 >
-                    <Text style={{ fontSize: 24 }}>HUM1</Text>
+                    <Text style={{ fontSize: 24 }}>Rohit's Humidifier</Text>
                     <Image
                         source={require('../../assets/humidifier.png')}
-                        style={{ margin: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
+                        style={{ marginTop: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
                     />
                 </Pressable>
-                <Pressable style={({ pressed }) => [
-                    devicesPageStyles.fillButton,
-                    {
-                        backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                        marginRight: 10
-                    }]}
-                    onPress={() => console.log('test')}
-                >
-                    <Text style={{ fontSize: 24 }}>HUM1</Text>
-                    <Image
-                        source={require('../../assets/humidifier.png')}
-                        style={{ margin: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
-                    />
-                </Pressable>
-                <Pressable style={({ pressed }) => [
-                    devicesPageStyles.fillButton,
-                    {
-                        backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                        marginRight: 10
-                    }]}
-                    onPress={() => console.log('test')}
-                >
-                    <Text style={{ fontSize: 24 }}>HUM1</Text>
-                    <Image
-                        source={require('../../assets/humidifier.png')}
-                        style={{ margin: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
-                    />
-                </Pressable>
-                <Pressable style={({ pressed }) => [
-                    devicesPageStyles.fillButton,
-                    {
-                        backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                        marginRight: 10
-                    }]}
-                    onPress={() => console.log('test')}
-                >
-                    <Text style={{ fontSize: 24 }}>HUM1</Text>
-                    <Image
-                        source={require('../../assets/humidifier.png')}
-                        style={{ margin: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
-                    />
-                </Pressable>
-                <Pressable style={({ pressed }) => [
-                    devicesPageStyles.fillButton,
-                    {
-                        backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                        marginRight: 10
-                    }]}
-                    onPress={() => console.log('test')}
-                >
-                    <Text style={{ fontSize: 24 }}>HUM1</Text>
-                    <Image
-                        source={require('../../assets/humidifier.png')}
-                        style={{ margin: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
-                    />
-                </Pressable>
-                <Pressable style={({ pressed }) => [
-                    devicesPageStyles.fillButton,
-                    {
-                        backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                        marginRight: 10
-                    }]}
-                    onPress={() => console.log('test')}
-                >
-                    <Text style={{ fontSize: 24 }}>HUM1</Text>
-                    <Image
-                        source={require('../../assets/humidifier.png')}
-                        style={{ margin: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
-                    />
-                </Pressable>
-                <Pressable style={({ pressed }) => [
-                    devicesPageStyles.fillButton,
-                    {
-                        backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                        marginRight: 10
-                    }]}
-                    onPress={() => console.log('test')}
-                >
-                    <Text style={{ fontSize: 24 }}>HUM1</Text>
-                    <Image
-                        source={require('../../assets/humidifier.png')}
-                        style={{ margin: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
-                    />
-                </Pressable>
+            );
+        }
+    }
+    return (
+        <View>
+            <ScrollView contentContainerStyle={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap' }}>
+                {arrDevices}
             </ScrollView>
             <Pressable
                 style={({ pressed }) => ({

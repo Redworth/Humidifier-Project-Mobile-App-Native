@@ -8,7 +8,7 @@ import { useGlobalIsLoggedIn } from './src/loggedIn.js';
 import { DevicesScreen } from './src/DevicesScreen/devices'
 import { AutomationsScreen } from './src/AutomationsScreen/automations'
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { useColorScheme, StatusBar, Platform } from 'react-native';
+import { useColorScheme, StatusBar, Platform, Dimensions } from 'react-native';
 import { ActiveDevice } from './src/ActiveDeviceScreen/activeDevice.js';
 
 const Stack = createStackNavigator();
@@ -40,6 +40,7 @@ export function NotLoggedInScreens() {
 
 export function LoggedInScreens() {
   const scheme = useColorScheme();
+  const window = Dimensions.get('window')
   return (
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Drawer.Navigator initialRouteName="Devices" screenOptions={{
@@ -47,7 +48,8 @@ export function LoggedInScreens() {
         drawerStyle: {
           borderBottomRightRadius: 25,
           borderTopRightRadius: 25,
-          width: 250
+          width: 250,
+          backgroundColor: 'white',
         },
         drawerItemStyle: {
           display: 'flex',
@@ -57,12 +59,14 @@ export function LoggedInScreens() {
         },
         drawerLabelStyle: {
           fontSize: 18,
+          height: Platform.OS == "ios" ? 20 : null
         },
         headerStyle: {
-          height: StatusBar.currentHeight + 40,
+          height: Platform.OS == "ios" ? 80 : StatusBar.currentHeight + 40,
         },
         headerTitleAlign: 'center',
-        drawerActiveTintColor: "#FE0000"
+        drawerActiveTintColor: "#FE0000",
+        drawerType: 'front'
       }}>
         <Drawer.Screen name="Devices" component={DevicesScreens} />
         <Drawer.Screen name="Automations" component={AutomationsScreen} />
