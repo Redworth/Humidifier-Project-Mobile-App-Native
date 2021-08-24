@@ -1,9 +1,10 @@
 import React from 'react';
-import { View, TextInput, Text, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
+import { View, TextInput, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
 import { loginUser } from '../api.js';
 import { styles } from '../styles.js';
 import { validEmail, validPassword } from '../validators.js';
 import { accessGlobalIsLoggedIn } from '../loggedIn';
+import { CustomText } from '../customText'
 
 export function LoginScreen({navigation}) {
     var [emailAddr, changeEmail] = React.useState("")
@@ -24,9 +25,9 @@ export function LoginScreen({navigation}) {
                     style={{ width: 115, height: 115, alignSelf: 'center' }} />
             </View>
             <View style={styles.contentMargin}>
-                <Text style={{ alignSelf: 'center', fontSize: 48 }}>
+                <CustomText style={{ alignSelf: 'center', fontSize: 48 }}>
                     Log In
-                </Text>
+                </CustomText>
             </View>
             <View style={styles.contentMargin}>
                 <TextInput
@@ -34,6 +35,7 @@ export function LoginScreen({navigation}) {
                     onChangeText={changeEmail}
                     value={emailAddr}
                     placeholder=" Email Address"
+                    placeholderTextColor='#000000'
                 />
             </View>
             <View style={styles.contentMargin}>
@@ -42,7 +44,8 @@ export function LoginScreen({navigation}) {
                     onChangeText={changePassword}
                     value={userPass}
                     placeholder=" Password"
-                    secureTextEntry={true}
+                    secureCustomTextEntry={true}
+                    placeholderTextColor='#000000'
                 />
             </View>
             <View style={styles.contentMargin}>
@@ -73,25 +76,25 @@ export function LoginScreen({navigation}) {
                             }
                         }
                     }}>
-                    <Text style={styles.fillButtonText}>Log In</Text>
+                    <CustomText style={styles.fillButtonText}>Log In</CustomText>
                 </TouchableOpacity>
             </View>
             <View style={styles.contentMargin, { flexDirection: 'row', justifyContent: 'center' }}>
-                <Text style={{ alignSelf: 'center', fontSize: 18 }}>
+                <CustomText style={{ alignSelf: 'center', fontSize: 18 }}>
                     {string1}
-                </Text>
+                </CustomText>
                 <TouchableOpacity onPress={function () {navigation.goBack()}}>
-                    <Text style={{ alignSelf: 'center', fontSize: 18, color: "#FE0000" }}>
+                    <CustomText style={{ alignSelf: 'center', fontSize: 18, color: "#FE0000" }}>
                         {string2}
-                    </Text>
+                    </CustomText>
                 </TouchableOpacity>
             </View>
             {
                 errorShown ? (
                     <View style={styles.contentMargin}>
-                        <Text style={{ alignSelf: 'center', color: "#ff0000"}}>
+                        <CustomText style={{ alignSelf: 'center', color: "#ff0000"}}>
                             {loginMessage}
-                        </Text>
+                        </CustomText>
                     </View>
                 ) : null
             }

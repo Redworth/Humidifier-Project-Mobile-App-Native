@@ -10,6 +10,17 @@ import { AutomationsScreen } from './src/AutomationsScreen/automations'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useColorScheme, StatusBar, Platform, Dimensions } from 'react-native';
 import { ActiveDevice } from './src/ActiveDeviceScreen/activeDevice.js';
+import AppLoading from 'expo-app-loading';
+import { 
+  useFonts, 
+  Manrope_200ExtraLight,
+  Manrope_300Light,
+  Manrope_400Regular,
+  Manrope_500Medium,
+  Manrope_600SemiBold,
+  Manrope_700Bold,
+  Manrope_800ExtraBold,
+} from '@expo-google-fonts/manrope'
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -17,6 +28,20 @@ const Drawer = createDrawerNavigator();
 export default function App() {
 
   const isLoggedIn = useGlobalIsLoggedIn()
+
+  var [fontsLoaded] = useFonts({
+    Manrope_200ExtraLight,
+    Manrope_300Light,
+    Manrope_400Regular,
+    Manrope_500Medium,
+    Manrope_600SemiBold,
+    Manrope_700Bold,
+    Manrope_800ExtraBold,
+  });
+
+  if (!fontsLoaded) {
+    return <AppLoading />;
+  } 
 
   return (
     /*isLoggedIn.isLoggedInVal ? (
@@ -50,6 +75,7 @@ export function LoggedInScreens() {
           borderTopRightRadius: 25,
           width: 250,
           backgroundColor: 'white',
+          fontFamily: 'Manrope_500Medium'
         },
         drawerItemStyle: {
           display: 'flex',
@@ -59,12 +85,16 @@ export function LoggedInScreens() {
         },
         drawerLabelStyle: {
           fontSize: 18,
-          height: Platform.OS == "ios" ? 20 : null
+          height: Platform.OS == "ios" ? 20 : null,
+          fontFamily: 'Manrope_500Medium'
         },
         headerStyle: {
           height: Platform.OS == "ios" ? 80 : StatusBar.currentHeight + 40,
         },
         headerTitleAlign: 'center',
+        headerTitleStyle: {
+          fontFamily: 'Manrope_500Medium'
+        },
         drawerActiveTintColor: "#FE0000",
         drawerType: 'front'
       }}>
