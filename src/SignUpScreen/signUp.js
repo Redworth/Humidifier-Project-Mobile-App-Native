@@ -53,7 +53,7 @@ export function SignUpScreen({ navigation }) {
                     onChangeText={changePassword}
                     value={userPass}
                     placeholder=" Password"
-                    secureCustomTextEntry={true}
+                    secureTextEntry={true}
                     placeholderTextColor='#000000'
                 />
             </View>

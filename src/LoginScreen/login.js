@@ -2,9 +2,10 @@ import React from 'react';
 import { View, TextInput, TouchableOpacity, Image, TouchableHighlight } from 'react-native';
 import { loginUser } from '../api.js';
 import { styles } from '../styles.js';
-import { validEmail, validPassword } from '../validators.js';
+import { validEmail, validPassword, validName } from '../validators.js';
 import { accessGlobalIsLoggedIn } from '../loggedIn';
 import { CustomText } from '../customText'
+import { accessGlobalUsername } from '../currentUserName.js';
 
 export function LoginScreen({navigation}) {
     var [emailAddr, changeEmail] = React.useState("")
@@ -32,6 +33,15 @@ export function LoginScreen({navigation}) {
             <View style={styles.contentMargin}>
                 <TextInput
                     style={styles.textInput}
+                    onChangeText={changeName}
+                    value={userName}
+                    placeholder=" Username"
+                    placeholderTextColor='#000000'
+                />
+            </View>
+            <View style={styles.contentMargin}>
+                <TextInput
+                    style={styles.textInput}
                     onChangeText={changeEmail}
                     value={emailAddr}
                     placeholder=" Email Address"
@@ -44,7 +54,7 @@ export function LoginScreen({navigation}) {
                     onChangeText={changePassword}
                     value={userPass}
                     placeholder=" Password"
-                    secureCustomTextEntry={true}
+                    secureTextEntry={true}
                     placeholderTextColor='#000000'
                 />
             </View>
@@ -53,6 +63,7 @@ export function LoginScreen({navigation}) {
                     onPress={async function () {
                         var passwordValidate = validPassword(userPass)
                         var emailValidate = validEmail(emailAddr)
+                        var nameValidate = validName(userName)
 
                         if (emailValidate != "Ok") {
                             changeLogMessage(emailValidate);
@@ -60,6 +71,10 @@ export function LoginScreen({navigation}) {
                         }
                         else if (passwordValidate != "Ok") {
                             changeLogMessage(passwordValidate)
+                            setErrorShown(true)
+                        }
+                        else if (nameValidate != "Ok") {
+                            changeLogMessage(nameValidate)
                             setErrorShown(true)
                         }
                         else {
@@ -71,8 +86,10 @@ export function LoginScreen({navigation}) {
                             else {
                                 changeEmail("")
                                 changePassword("")
+                                changeName("")
                                 setErrorShown(false)
                                 accessGlobalIsLoggedIn().setTrue()
+                                accessGlobalUsername().setUsername(userName)
                             }
                         }
                     }}>

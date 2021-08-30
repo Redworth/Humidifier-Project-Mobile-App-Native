@@ -1,91 +1,90 @@
-import React from 'react';
+import React, { useEffect, useCallback } from 'react';
 import { ScrollView, Pressable, Image, Dimensions, TouchableOpacity, Icon, View, FlatList } from 'react-native';
 import { devicesPageStyles } from '../styles.js';
 import { CustomText } from '../customText'
 import axios from 'axios';
+import { useGlobalUsername } from '../currentUserName.js';
 
 export function DevicesScreen({ navigation }) {
 
-    var [arrDevices, setArrDevices] = React.useState([])
+    var [jsonData, setJsonData] = React.useState({})
+    var [getComplete, setGetComplete] = React.useState(false)
 
-    var count = 0;
-    var [arrKeys, setArrKeys] = React.useState([])
+    const username = useGlobalUsername();
 
-    const [getComplete, setGetComplete] = React.useState(false)
+    useEffect(() => {
+        async function getDeviceInfo() {
+            //const url = "http://10.0.0.158:8000/get-devices-info"
+            const url = "http://192.168.1.140:8000/get-devices-info"
+            const postData = {
+                "username": username.username
+            }
 
-    async function getDeviceInfo() {
-        //const url = "http://10.0.0.158:8000/get-devices-info"
-        const url = "http://127.0.0.1:8000/get-devices-info"
-        const postData = {
-            "username": 'rohit'
+            const response = await axios.post(url, postData)
+            
+            setJsonData(response)
+            setGetComplete(true)
         }
 
-        const response = await axios.post(url, postData)
+        getDeviceInfo()
 
-        Object.keys(response.data).forEach(
-            function (key, index) {
-                setArrKeys([
-                    ...arrKeys,
-                    key
-                ])
-            }
-        )
+    }, [])
 
-        for (const i of arrKeys) {
-            count += 1;
-            if (count % 2 != 0) {
-                setArrDevices([
-                    ...arrDevices,
-                    <Pressable style={({ pressed }) => [
-                        devicesPageStyles.fillButton,
-                        {
-                            backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                            marginLeft: 10,
-                        }]}
-                        onPress={() => navigation.navigate('ActiveDevice')}
-                        key={count}
-                    >
-                        <CustomText style={{ fontSize: 24 }}>{i}</CustomText>
-                        <Image
-                            source={require('../../assets/humidifier.png')}
-                            style={{ marginTop: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
-                        />
-                    </Pressable>
-                ]);
-            }
-            else {
-                arrDevices.push(
-                    <Pressable style={({ pressed }) => [
-                        devicesPageStyles.fillButton,
-                        {
-                            backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                            marginRight: 10,
-                        }]}
-                        onPress={() => navigation.navigate('ActiveDevice')}
-                        key={count}
-                    >
-                        <CustomText style={{ fontSize: 24 }}>{i}</CustomText>
-                        <Image
-                            source={require('../../assets/humidifier.png')}
-                            style={{ marginTop: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
-                        />
-                    </Pressable>
-                );
-            }
-        }
-        setGetComplete(true)
-    }
-
-    getDeviceInfo()
-
-    if (getComplete != true) {
+    if (getComplete === false) {
         return null;
     }
     else {
         return (
-            <View style={{ backgroundColor: 'white' }}>
-                <ScrollView contentContainerStyle={{ display: "flex", flexDirection: 'row', flexWrap: 'wrap' }}>
-                    {arrDevices}
+            <View>
+                <ScrollView contentContainerStyle={{ 
+                    display: "flex", 
+                    flexDirection: 'row', 
+                    flexWrap: 'wrap', 
+                    height: Dimensions.get('window').height, 
+                    backgroundColor: 'white'  
+                }}>
+                    {
+                        Object.keys(jsonData.data).map((key, index) => {
+                            if (index % 2 == 0) {
+                                return (
+                                    <Pressable style={({ pressed }) => [
+                                        devicesPageStyles.fillButton,
+                                        {
+                                            backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
+                                            marginLeft: 10,
+                                        }]}
+                                        onPress={() => navigation.navigate('ActiveDevice')}
+                                        key={index}
+                                    >
+                                        <CustomText style={{ fontSize: 24 }}>{key}</CustomText>
+                                        <Image
+                                            source={require('../../assets/humidifier.png')}
+                                            style={{ marginTop: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
+                                        />
+                                    </Pressable>
+                                );
+                            }
+                            else {
+                                return (
+                                    <Pressable style={({ pressed }) => [
+                                        devicesPageStyles.fillButton,
+                                        {
+                                            backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
+                                            marginRight: 10,
+                                        }]}
+                                        onPress={() => navigation.navigate('ActiveDevice')}
+                                        key={index}
+                                    >
+                                        <CustomText style={{ fontSize: 24 }}>{key}</CustomText>
+                                        <Image
+                                            source={require('../../assets/humidifier.png')}
+                                            style={{ marginTop: 15, width: '57.97101449%', height: '45.45454545%', alignSelf: 'center' }}
+                                        />
+                                    </Pressable>
+                                );
+                            }                
+                        })
+                    }
                 </ScrollView>
                 <Pressable
                     style={({ pressed }) => ({
