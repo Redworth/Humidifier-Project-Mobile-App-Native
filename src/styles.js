@@ -76,7 +76,6 @@ export const activeDeviceStyles = StyleSheet.create({
     offButton: {
         alignSelf: 'center',
         alignItems: 'center',
-        backgroundColor: "#FE0000",
         padding: 18,
         shadowRadius: 4,
         shadowOffset: {

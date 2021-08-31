@@ -18,6 +18,7 @@ export function DevicesScreen({ navigation }) {
             const url = "http://192.168.1.140:8000/get-devices-info"
             const postData = {
                 "username": username.username
+                //"username": "rohit"
             }
 
             const response = await axios.post(url, postData)
@@ -30,7 +31,7 @@ export function DevicesScreen({ navigation }) {
 
     }, [])
 
-    if (getComplete === false) {
+    if (!getComplete) {
         return null;
     }
     else {
@@ -40,7 +41,7 @@ export function DevicesScreen({ navigation }) {
                     display: "flex", 
                     flexDirection: 'row', 
                     flexWrap: 'wrap', 
-                    height: Dimensions.get('window').height, 
+                    height: '100%', 
                     backgroundColor: 'white'  
                 }}>
                     {
@@ -53,7 +54,7 @@ export function DevicesScreen({ navigation }) {
                                             backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
                                             marginLeft: 10,
                                         }]}
-                                        onPress={() => navigation.navigate('ActiveDevice')}
+                                        onPress={() => navigation.navigate('ActiveDevice', { deviceName: key })}
                                         key={index}
                                     >
                                         <CustomText style={{ fontSize: 24 }}>{key}</CustomText>
@@ -72,7 +73,7 @@ export function DevicesScreen({ navigation }) {
                                             backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
                                             marginRight: 10,
                                         }]}
-                                        onPress={() => navigation.navigate('ActiveDevice')}
+                                        onPress={() => navigation.navigate('ActiveDevice', { deviceName: key })}
                                         key={index}
                                     >
                                         <CustomText style={{ fontSize: 24 }}>{key}</CustomText>
