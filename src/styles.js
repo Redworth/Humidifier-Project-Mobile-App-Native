@@ -2,8 +2,8 @@ import { StyleSheet, Dimensions } from 'react-native'
 
 export const styles = StyleSheet.create({
     container: {
-        flex: 1, 
-        flexDirection: 'column', 
+        flex: 1,
+        flexDirection: 'column',
         justifyContent: 'center',
         backgroundColor: "#ffffff"
     },
@@ -58,18 +58,18 @@ export const devicesPageStyles = StyleSheet.create({
 })
 
 export const activeDeviceStyles = StyleSheet.create({
-    fillButton: {
+    infoView: {
         padding: 15,
         margin: 10,
-        marginRight: 5,
-        marginLeft: 5,
+        marginRight: 10,
+        marginLeft: 10,
         shadowRadius: 24,
         shadowOffset: {
             width: 0,
             height: 4
         },
-        width: '46%',
-        height: Dimensions.get('window').height/8.12,
+        width: '94.66666667%',
+        height: Dimensions.get('window').height / 8.12,
         elevation: 24,
         borderRadius: 25,
     },

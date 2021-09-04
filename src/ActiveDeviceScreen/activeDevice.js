@@ -21,32 +21,36 @@ export function ActiveDevice({ navigation, route }) {
             //const url = "http://10.0.0.158:8000/get-devices-info"
             const url = "http://192.168.1.140:8000/specific-device"
             const postData = {
-                "username": username.username,
-                //"username": "rohit",
+                //"username": username.username,
+                "username": "rohit",
                 "targetDevice": route.params.deviceName
             }
 
             const response = await axios.post(url, postData)
 
-            if (response.data['intensity'] >= 1) {
-                setColor("#00E391")
-                setOnOff("ON")
-                setOffOnButton("Turn Device Off")
-                setOffOnButtonColor("#FE0000")
-            }
+            if (response.data['intensity'].toString() + "%" == value) {}
             else {
-                setColor("#FE0000")
-                setOnOff("OFF")
-                setOffOnButton("Turn Device On")
-                setOffOnButtonColor("#00E391")
+                if (response.data['intensity'] >= 1) {
+                    setColor("#00E391")
+                    setOnOff("ON")
+                    setOffOnButton("Turn Device Off")
+                    setOffOnButtonColor("#FE0000")
+                }
+                else {
+                    setColor("#FE0000")
+                    setOnOff("OFF")
+                    setOffOnButton("Turn Device On")
+                    setOffOnButtonColor("#00E391")
+                }
+                setValue(response.data['intensity'].toString() + "%")
             }
-            setValue(response.data['intensity'].toString() + "%")
             setGetComplete(true)
         }
+        getDeviceInfo();
+        const pollData = setInterval(getDeviceInfo, 1000);
 
-        getDeviceInfo()
-
-    }, [])
+        return () => clearInterval(pollData);
+    }, [value])
 
     if (!getComplete) {
         return null;
@@ -86,30 +90,15 @@ export function ActiveDevice({ navigation, route }) {
                         source={require('../../assets/humidifier.png')}
                         style={{ width: 250, height: 250, alignSelf: 'center' }}
                     />
-                    <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                        <Pressable style={({ pressed }) => [
-                            activeDeviceStyles.fillButton,
+                        <View style={[
+                            activeDeviceStyles.infoView,
                             {
-                                backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                                marginLeft: 10,
-                                marginRight: 5,
+                                backgroundColor: "#FFFFFF",
                                 justifyContent: 'center',
                             }]}
                         >
-                            <CustomText style={{ fontSize: 50, alignSelf: 'center', color: colorStatus }}>{onOff}</CustomText>
-                        </Pressable>
-                        <Pressable style={({ pressed }) => [
-                            activeDeviceStyles.fillButton,
-                            {
-                                backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
-                                marginLeft: 5,
-                                marginRight: 10,
-                                justifyContent: 'center',
-                            }]}
-                        >
-                            <CustomText style={{ fontSize: 50, alignSelf: 'center' }}>{value}</CustomText>
-                        </Pressable>
-                    </View>
+                            <CustomText style={{ fontSize: 50, alignSelf: 'center', color: colorStatus }}>{value} spread</CustomText>
+                        </View>
                     <TouchableOpacity style={[
                         activeDeviceStyles.offButton, 
                         { 

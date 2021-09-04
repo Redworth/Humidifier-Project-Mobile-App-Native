@@ -17,8 +17,8 @@ export function DevicesScreen({ navigation }) {
             //const url = "http://10.0.0.158:8000/get-devices-info"
             const url = "http://192.168.1.140:8000/get-devices-info"
             const postData = {
-                "username": username.username
-                //"username": "rohit"
+                //"username": username.username
+                "username": "rohit"
             }
 
             const response = await axios.post(url, postData)

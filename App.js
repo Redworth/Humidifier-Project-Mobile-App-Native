@@ -44,10 +44,10 @@ export default function App() {
   } 
 
   return (
-    isLoggedIn.isLoggedInVal ? (
-    <LoggedInScreens />
-    ) : <NotLoggedInScreens />
+    //isLoggedIn.isLoggedInVal ? (
     //<LoggedInScreens />
+    //) : <NotLoggedInScreens />
+    <LoggedInScreens />
   );
 }
 
