@@ -1,21 +1,38 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useCallback } from 'react'
 import { ScrollView, Pressable, Image, Dimensions, TouchableOpacity, View, FlatList } from 'react-native';
 import { CustomText } from '../customText'
 import { activeDeviceStyles } from '../styles.js';
 import axios from 'axios';
 import { useGlobalUsername } from '../currentUserName';
+import Slider from '@react-native-community/slider'
 
 export function ActiveDevice({ navigation, route }) {
 
     var [getComplete, setGetComplete] = React.useState(false)
     var [colorStatus, setColor] = React.useState("")
-    var [offOnButtonColor, setOffOnButtonColor] = React.useState("")
-    var [onOff, setOnOff] = React.useState("")
     var [value, setValue] = React.useState("")
-    var [offOnButtonText, setOffOnButton] = React.useState("")
+    var [numericValue, setNumValue] = React.useState(0)
+    var [valueDisp, setValueDisp] = React.useState("")
 
     const username = useGlobalUsername();
 
+    function updateValues(numVal, valDisp) {
+        setNumValue(numVal)
+        setValueDisp(valDisp)
+    }
+
+    async function updateDeviceInfo() {
+        const url = "http://192.168.1.140:8000/app-request"
+        const postData = {
+            //"username": username.username,
+            "username": "rohit",
+            "targetDevice": route.params.deviceName,
+            "requestDetails": "NA",
+            "targetIntensity": numericValue
+        }
+
+        await axios.post(url, postData)
+    }
     useEffect(() => {
         async function getDeviceInfo() {
             //const url = "http://10.0.0.158:8000/get-devices-info"
@@ -28,21 +45,17 @@ export function ActiveDevice({ navigation, route }) {
 
             const response = await axios.post(url, postData)
 
-            if (response.data['intensity'].toString() + "%" == value) {}
+            if (response.data['intensity'].toString() + "%" == value) { }
             else {
                 if (response.data['intensity'] >= 1) {
                     setColor("#00E391")
-                    setOnOff("ON")
-                    setOffOnButton("Turn Device Off")
-                    setOffOnButtonColor("#FE0000")
                 }
                 else {
                     setColor("#FE0000")
-                    setOnOff("OFF")
-                    setOffOnButton("Turn Device On")
-                    setOffOnButtonColor("#00E391")
                 }
                 setValue(response.data['intensity'].toString() + "%")
+                setNumValue(response.data['intensity'])
+                setValueDisp(response.data['intensity'].toString() + "%")
             }
             setGetComplete(true)
         }
@@ -90,22 +103,33 @@ export function ActiveDevice({ navigation, route }) {
                         source={require('../../assets/humidifier.png')}
                         style={{ width: 250, height: 250, alignSelf: 'center' }}
                     />
-                        <View style={[
-                            activeDeviceStyles.infoView,
-                            {
-                                backgroundColor: "#FFFFFF",
-                                justifyContent: 'center',
-                            }]}
-                        >
-                            <CustomText style={{ fontSize: 50, alignSelf: 'center', color: colorStatus }}>{value} spread</CustomText>
-                        </View>
-                    <TouchableOpacity style={[
-                        activeDeviceStyles.offButton, 
-                        { 
-                            backgroundColor: offOnButtonColor
-                        }]}>
-                        <CustomText style={activeDeviceStyles.offButtonText}>{offOnButtonText}</CustomText>
-                    </TouchableOpacity>
+                    <View style={[
+                        activeDeviceStyles.infoView,
+                        {
+                            backgroundColor: "#FFFFFF",
+                            justifyContent: 'center',
+                        }]}
+                    >
+                        <CustomText style={{ fontSize: 40, alignSelf: 'center', textAlign: 'center' }}>
+                            <CustomText style={{ color: colorStatus }}>{value}</CustomText>
+                            <CustomText style={{ color: '#666666' }}> intensity on device.</CustomText></CustomText>
+                    </View>
+                    <View>
+                        <Slider
+                            style={{ width: '94.666667%', marginTop: 15, marginBottom: 7, alignSelf: 'center' }}
+                            minimumValue={0}
+                            maximumValue={100}
+                            minimumTrackTintColor="#FE0000"
+                            maximumTrackTintColor="#666666"
+                            onValueChange={(val) => { updateValues(val, val.toString() + "%")}}
+                            step={1}
+                            thumbTintColor="#DDDDDD"
+                            onSlidingComplete={() => updateDeviceInfo()}
+                            value={numericValue}
+                        />
+                    </View>
+                    <CustomText style={{ fontSize: 18, alignSelf: 'center', textAlign: 'center', marginLeft: 10, marginRight: 10 }}>Slide the above slider to adjust the intensity!</CustomText>
+                    <CustomText style={{ fontSize: 50, alignSelf: 'center', textAlign: 'center', marginLeft: 10, marginRight: 10 }}>{valueDisp}</CustomText>
                 </ScrollView>
             </View>
         )

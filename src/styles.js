@@ -69,7 +69,7 @@ export const activeDeviceStyles = StyleSheet.create({
             height: 4
         },
         width: '94.66666667%',
-        height: Dimensions.get('window').height / 8.12,
+        height: '24.630542%',
         elevation: 24,
         borderRadius: 25,
     },
