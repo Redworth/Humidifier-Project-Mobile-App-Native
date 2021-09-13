@@ -1,8 +1,8 @@
 import React from 'react';
 import 'react-native-gesture-handler';
 import { SignUpScreen } from './src/SignUpScreen/signUp.js'
-import { NavigationContainer, DefaultTheme, DarkTheme, } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { createStackNavigator, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 import { LoginScreen } from './src/LoginScreen/login.js';
 import { useGlobalIsLoggedIn } from './src/loggedIn.js';
 import { DevicesScreen } from './src/DevicesScreen/devices'
@@ -11,8 +11,8 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useColorScheme, StatusBar, Platform, Dimensions } from 'react-native';
 import { ActiveDevice } from './src/ActiveDeviceScreen/activeDevice.js';
 import AppLoading from 'expo-app-loading';
-import { 
-  useFonts, 
+import {
+  useFonts,
   Manrope_200ExtraLight,
   Manrope_300Light,
   Manrope_400Regular,
@@ -21,6 +21,7 @@ import {
   Manrope_700Bold,
   Manrope_800ExtraBold,
 } from '@expo-google-fonts/manrope'
+import { NewDevice } from './src/AddNewDeviceScreen/addNewDevice.js';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -41,7 +42,7 @@ export default function App() {
 
   if (!fontsLoaded) {
     return <AppLoading />;
-  } 
+  }
 
   return (
     //isLoggedIn.isLoggedInVal ? (
@@ -63,9 +64,18 @@ export function NotLoggedInScreens() {
   )
 }
 
+function getVisible(route) {
+  const routeName = getFocusedRouteNameFromRoute(route) == 'NewDevice'
+  //const isNewDev = useGlobalIsNewDevice()
+
+  if (routeName) { return false }
+  else { return true }
+}
+
 export function LoggedInScreens() {
   const scheme = useColorScheme();
   const window = Dimensions.get('window')
+
   return (
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Drawer.Navigator initialRouteName="Devices" screenOptions={{
@@ -98,7 +108,9 @@ export function LoggedInScreens() {
         drawerActiveTintColor: "#FE0000",
         drawerType: 'front'
       }}>
-        <Drawer.Screen name="Devices" component={DevicesScreens} />
+        <Drawer.Screen name="Devices" component={DevicesScreens} options={({ route }) => ({
+          headerShown: getVisible(route),
+        })} />
         <Drawer.Screen name="Automations" component={AutomationsScreen} />
       </Drawer.Navigator>
     </NavigationContainer>
@@ -107,9 +119,15 @@ export function LoggedInScreens() {
 
 export function DevicesScreens() {
   return (
-    <Stack.Navigator headerMode="none">
+    <Stack.Navigator headerMode="none" screenOptions={{
+
+    }}>
       <Stack.Screen name="DevicesView" component={DevicesScreen} />
       <Stack.Screen name="ActiveDevice" component={ActiveDevice} />
+      <Stack.Screen name="NewDevice" component={NewDevice} options={{
+        cardStyleInterpolator: Platform.OS == "ios" ? CardStyleInterpolators.forVerticalIOS : CardStyleInterpolators.forRevealFromBottomAndroid,
+       
+      }} />
     </Stack.Navigator>
   )
 }

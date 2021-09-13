@@ -27,8 +27,9 @@ export const styles = StyleSheet.create({
         shadowRadius: 4,
         shadowOffset: {
             width: 0,
-            height: 5
+            height: 4
         },
+        shadowOpacity: 0.25,
         elevation: 4,
         borderRadius: 10,
     },
@@ -45,11 +46,12 @@ export const devicesPageStyles = StyleSheet.create({
         margin: 10,
         marginRight: 5,
         marginLeft: 5,
-        shadowRadius: 24,
+        shadowRadius: 10,
         shadowOffset: {
             width: 0,
-            height: 4
+            height: 10
         },
+        shadowOpacity: 0.25,
         width: Dimensions.get('window').width / 2.1739130435,
         height: Dimensions.get('window').height / 3.5,
         elevation: 24,
@@ -63,11 +65,12 @@ export const activeDeviceStyles = StyleSheet.create({
         margin: 10,
         marginRight: 10,
         marginLeft: 10,
-        shadowRadius: 24,
+        shadowRadius: 10,
         shadowOffset: {
             width: 0,
-            height: 4
+            height: 10
         },
+        shadowOpacity: 0.25,
         width: '94.66666667%',
         height: '24.630542%',
         elevation: 24,
@@ -82,6 +85,7 @@ export const activeDeviceStyles = StyleSheet.create({
             width: 0,
             height: 5
         },
+        shadowOpacity: 1,
         elevation: 4,
         borderRadius: 10,
         width: '94.66666667%',

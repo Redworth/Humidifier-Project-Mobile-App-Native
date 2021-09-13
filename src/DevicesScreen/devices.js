@@ -99,6 +99,7 @@ export function DevicesScreen({ navigation }) {
                             width: 0,
                             height: 4
                         },
+                        shadowOpacity: 0.5,
                         position: 'absolute',
                         bottom: 10,
                         right: 10,
@@ -112,6 +113,7 @@ export function DevicesScreen({ navigation }) {
                     children={({ pressed }) => (
                         <CustomText style={{ fontSize: 18, color: pressed ? "#FE0000" : '#FFFFFF' }}>+ Add a Device</CustomText>
                     )}
+                    onPress={() => navigation.navigate('NewDevice')}
                 />
             </View>
         );
