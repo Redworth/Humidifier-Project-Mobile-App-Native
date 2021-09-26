@@ -26,7 +26,7 @@ export function NewDevice() {
                 headerShown: false
             }}></Stack.Screen>
             <Stack.Screen name="Page2" component={NewDevicePage2} options={{
-                title: 'Searching for Devices'
+                title: 'Connect to the Hotspot'
             }}></Stack.Screen>
         </Stack.Navigator>
     )
@@ -48,12 +48,12 @@ function NewDevicePage1({ navigation }) {
                     justifyContent: 'center'
                 }]}
                 onPress={navigation.goBack}>
-                    <View style={{ flex: 1, flexDirection: 'row' }}>
-                <Image
-                    source={require('../../assets/back_icon.png')}
-                    style={{ width: 30, height: 30, alignSelf: 'center' }}
-                />
-                <CustomText style={{ fontSize: 20, alignSelf: 'center'}}> Back</CustomText>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <Image
+                        source={require('../../assets/back_icon.png')}
+                        style={{ width: 30, height: 30, alignSelf: 'center' }}
+                    />
+                    <CustomText style={{ fontSize: 20, alignSelf: 'center' }}> Back</CustomText>
                 </View>
             </Pressable>
             <CustomText style={{ alignSelf: 'center', fontSize: 50, color: '#FE0000', margin: 5, textAlign: 'left', marginLeft: 30, marginRight: 30 }}>Let's get your humidifier set up.</CustomText>
@@ -78,6 +78,11 @@ function NewDevicePage1({ navigation }) {
 
 function NewDevicePage2({ navigation }) {
     return (
-        <View style={{ backgroundColor: '#FFFFFF', flex: 1 }}></View>
+        <View style={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+            <Image source={require('../../assets/wifi_icon.png')} style={{ width: 150, height: 150, marginBottom: 10}}/>
+            <CustomText style={{ textAlign: 'center', fontSize: 25, marginLeft: 10, marginRight: 10 }}>
+                On your device, connect to your device's hotspot. The password is "redworthHotspot"{'\n\n'} 
+                The name should look like: <CustomText style={{ color: '#FE0000'}}>Redworth-HUM-Spot</CustomText></CustomText>
+        </View>
     )
 }
