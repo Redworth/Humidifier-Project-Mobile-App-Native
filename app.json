@@ -6,9 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/Redworth6(Current)(Transparent).png",
     "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "contain"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
