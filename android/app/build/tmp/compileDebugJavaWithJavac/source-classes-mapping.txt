@@ -1,0 +1,17 @@
+com/redworth/redworth/MainActivity.java
+ com.redworth.redworth.MainActivity
+ com.redworth.redworth.MainActivity$1
+com/redworth/redworth/generated/BasePackageList.java
+ com.redworth.redworth.generated.BasePackageList
+com/redworth/redworth/BuildConfig.java
+ com.redworth.redworth.BuildConfig
+com/firebasenative/ReactNativeFlipper.java
+ com.firebasenative.ReactNativeFlipper
+ com.firebasenative.ReactNativeFlipper$1
+ com.firebasenative.ReactNativeFlipper$2
+ com.firebasenative.ReactNativeFlipper$2$1
+com/redworth/redworth/MainApplication.java
+ com.redworth.redworth.MainApplication
+ com.redworth.redworth.MainApplication$1
+com/facebook/react/PackageList.java
+ com.facebook.react.PackageList
