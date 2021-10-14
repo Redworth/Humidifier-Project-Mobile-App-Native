@@ -74,7 +74,7 @@ export function NewDevice() {
                 title: 'Set your device\'s name'
             }}></Stack.Screen>
             <Stack.Screen name="Page6" component={NewDevicePage6} options={{
-                title: 'test page'
+                headerShown: false
             }}></Stack.Screen>
         </Stack.Navigator>
     )
@@ -225,7 +225,7 @@ function NewDevicePage4({ navigation }) {
                 <View style={styles.contentMargin}>
                     <TouchableOpacity
                         style={localStyles.nextFillButton}
-                        onPress={() => navigation.navigate('Page5')}
+                        onPress={() => navigation.navigate('Page5') /* navigation.navigate('Page6')*/}
                     >
                         <View style={{ flexDirection: 'row' }}>
                             <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30 }]}>Next</CustomText>
@@ -296,6 +296,52 @@ function NewDevicePage5({ navigation }) {
 function NewDevicePage6({ navigation }) {
 
     return (
-        <View style={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center' }}></View>
+        <View style={{ flex: 1, justifyContent: 'center', backgroundColor: "#FFFFFF" }}>
+            <Pressable style={({ pressed }) => [
+                {
+                    backgroundColor: pressed ? "#EEEEEE" : "#FFFFFF",
+                    marginLeft: 7,
+                    marginTop: 24,
+                    alignSelf: 'center',
+                    borderRadius: 10,
+                    width: 100,
+                    height: 40,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                }]}
+                onPress={navigation.goBack}>
+                <View style={{ flex: 1, flexDirection: 'row' }}>
+                    <Image
+                        source={require('../../assets/back_icon.png')}
+                        style={{ width: 30, height: 30, alignSelf: 'center' }}
+                    />
+                    <CustomText style={{ fontSize: 20, alignSelf: 'center' }}> Back</CustomText>
+                </View>
+            </Pressable>
+            <CustomText style={{
+                alignSelf: 'center',
+                fontSize: 50,
+                color: '#FE0000',
+                margin: 5,
+                textAlign: 'left',
+                marginLeft: 30,
+                marginRight: 30
+            }}>Your device is all ready to go!</CustomText>
+            <Image
+                source={require('../../assets/humidifier.png')}
+                style={{ width: 250, height: 250, margin: 5, alignSelf: 'center' }}
+            />
+            <View style={styles.contentMargin}>
+                <TouchableOpacity
+                    style={styles.fillButton}
+                    onPress={() => navigation.getParent().goBack()}
+                >
+                    <View style={{ flexDirection: 'row' }}>
+                        <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30, width: '90%' }]}>Finish</CustomText>
+                        <CustomText style={[styles.fillButtonText, { fontSize: 30, justifyContent: 'flex-start', alignSelf: 'center', width: '10%' }]}>{'->'}</CustomText>
+                    </View>
+                </TouchableOpacity>
+            </View>
+        </View>
     )
 }

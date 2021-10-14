@@ -27,9 +27,13 @@ export function DevicesScreen({ navigation }) {
             setGetComplete(true)
         }
 
-        getDeviceInfo()
+        const unsubscribe = navigation.addListener('focus', () => {
+            getDeviceInfo()
+        })
+        
+        return unsubscribe;
 
-    }, [])
+    }, [navigation])
 
     if (!getComplete) {
         return null;
