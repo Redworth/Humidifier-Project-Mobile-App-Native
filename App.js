@@ -75,7 +75,7 @@ export function LoggedInScreens() {
   const window = Dimensions.get('window')
 
   return (
-    <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
+    <NavigationContainer>
       <Drawer.Navigator initialRouteName="Devices" screenOptions={{
         //drawerActiveTintColor: "#fe0000"
         drawerStyle: {
