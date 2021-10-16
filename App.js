@@ -65,11 +65,9 @@ export function NotLoggedInScreens() {
 }
 
 function getVisible(route) {
-  const routeName = getFocusedRouteNameFromRoute(route) == 'NewDevice'
-  //const isNewDev = useGlobalIsNewDevice()
+  const routeTest = getFocusedRouteNameFromRoute(route) == 'NewDevice'
 
-  if (routeName) { return false }
-  else { return true }
+  return !routeTest
 }
 
 export function LoggedInScreens() {
