@@ -31,7 +31,7 @@ async function setWifiForDevice(ssid, psk) {
 }
 
 async function registerNewDevice(deviceName, username) {
-    const url = "http://192.168.1.140:8000/register-device"
+    const url = "http://gitpod-machine.eastus.cloudapp.azure.com:8000/register-device"
     const postData = {
         "new_device_name": deviceName,
         "username": /*username*/ "rohit"

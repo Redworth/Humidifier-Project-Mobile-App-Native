@@ -22,7 +22,7 @@ export function ActiveDevice({ navigation, route }) {
     }
 
     async function updateDeviceInfo() {
-        const url = "http://192.168.1.140:8000/app-request"
+        const url = "http://gitpod-machine.eastus.cloudapp.azure.com:8000/app-request"
         const postData = {
             //"username": username.username,
             "username": "rohit",
@@ -36,7 +36,7 @@ export function ActiveDevice({ navigation, route }) {
     useEffect(() => {
         async function getDeviceInfo() {
             //const url = "http://10.0.0.158:8000/get-devices-info"
-            const url = "http://192.168.1.140:8000/specific-device"
+            const url = "http://gitpod-machine.eastus.cloudapp.azure.com:8000/specific-device"
             const postData = {
                 //"username": username.username,
                 "username": "rohit",

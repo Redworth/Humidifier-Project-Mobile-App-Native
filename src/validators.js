@@ -28,7 +28,7 @@ export async function availName(username) {
     }
     //const url = "https://iot-backend-dev-dev-rohit-karthik.cloud.okteto.net/create-user"
 
-    const url = "http://192.168.1.140:8000/get-users"
+    const url = "http://gitpod-machine.eastus.cloudapp.azure.com:8000/get-users"
 
 
     const response = await axios.post(url, data)
