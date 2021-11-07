@@ -20,11 +20,12 @@ const Stack = createStackNavigator();
 
 const colorScheme = Appearance.getColorScheme()
 
-async function setWifiForDevice(ssid, psk) {
+async function setWifiForDevice(ssid, psk, hostname) {
     const url = "http://10.0.0.5:8000/connect-to-wifi"
     const postData = {
         "SSID": ssid,
-        "Password": psk
+        "Password": psk,
+        "Hostname": hostname,
     }
 
     await axios.post(url, postData)
@@ -62,13 +63,13 @@ export function NewDevice() {
                 headerShown: false
             }}></Stack.Screen>
             <Stack.Screen name="Page2" component={NewDevicePage2} options={{
-                title: 'Connect to the Hotspot'
+                title: 'Set your device\'s name'
             }}></Stack.Screen>
             <Stack.Screen name="Page3" component={NewDevicePage3} options={{
-                title: 'Enter your WiFi Details'
+                title: 'Connect to the Hotspot'
             }}></Stack.Screen>
             <Stack.Screen name="Page4" component={NewDevicePage4} options={{
-                title: 'Set your device\'s name'
+                title: 'Enter your WiFi Details'
             }}></Stack.Screen>
             <Stack.Screen name="Page5" component={NewDevicePage5} options={{
                 title: 'Is your device connected?'
@@ -125,6 +126,75 @@ function NewDevicePage1({ navigation }) {
 }
 
 function NewDevicePage2({ navigation }) {
+
+    var [deviceName, changeName] = React.useState("")
+    var [errorShown, setErrorShown] = React.useState(false);
+    var [registerMessage, changeRegisterMessage] = React.useState("")
+
+
+    const username = useGlobalUsername();
+
+    return (
+        <ScrollView contentContainerStyle={[
+            styles.container]}>
+            <Image source={require('../../assets/humidifier.png')} style={{
+                width: 150, 
+                height: 150, 
+                marginBottom: 10,
+                alignSelf: 'center'
+            }} />
+            <CustomText style={{ textAlign: 'center', fontSize: 25, marginLeft: 10, marginRight: 10 }}>
+                To check if your selected name is available, input your device name here.</CustomText>
+            <View style={styles.contentMargin}>
+                <TextInput
+                    style={styles.textInput}
+                    onChangeText={changeName}
+                    value={deviceName}
+                    placeholder=" Device Name"
+                    placeholderTextColor='#000000'
+                />
+            </View>
+            <View style={styles.contentMargin}>
+                <TouchableOpacity
+                    style={styles.fillButton}
+                    onPress={
+                        async () => {
+                            var res = await registerNewDevice(deviceName, /*username*/ "rohit")
+                            if (res != "Ok") {
+                                setErrorShown(true)
+                                changeRegisterMessage(res)
+                            }
+                            else {
+                                setErrorShown(false)
+                                navigation.navigate('Page3', {
+                                    deviceName: deviceName
+                                })
+                            }
+                        }
+                    }
+                >
+                    <View style={{ flexDirection: 'row' }}>
+                        <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30, width: '90%' }]}>Next</CustomText>
+                        <CustomText style={[styles.fillButtonText, { fontSize: 30, justifyContent: 'flex-start', alignSelf: 'center', width: '10%' }]}>{'->'}</CustomText>
+                    </View>
+                </TouchableOpacity>
+            </View>
+            {
+                errorShown ? (
+                    <View style={styles.contentMargin}>
+                        <CustomText style={{ alignSelf: 'center', color: "#ff0000"}}>
+                            {registerMessage}
+                        </CustomText>
+                    </View>
+                ) : null
+            }
+        </ScrollView>
+    )
+}
+
+function NewDevicePage3({ navigation, route }) {
+    var deviceName = route.params.deviceName
+
     return (
         <ScrollView contentContainerStyle={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <Image source={require('../../assets/wifi_icon.png')} style={{ width: 150, height: 150, marginBottom: 10 }} />
@@ -137,7 +207,9 @@ function NewDevicePage2({ navigation }) {
             <View style={styles.contentMargin}>
                 <TouchableOpacity
                     style={styles.fillButton}
-                    onPress={() => navigation.navigate('Page3') /* navigation.navigate('Page4')*/}
+                    onPress={() => navigation.navigate('Page3', {
+                        deviceName: deviceName
+                    }) /* navigation.navigate('Page4')*/}
                 >
                     <View style={{ flexDirection: 'row' }}>
                         <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30, width: '90%' }]}>Next</CustomText>
@@ -149,10 +221,11 @@ function NewDevicePage2({ navigation }) {
     )
 }
 
-function NewDevicePage3({ navigation }) {
+function NewDevicePage4({ navigation, route }) {
 
     var [ssid, changeSSID] = React.useState("")
     var [psk, changePSK] = React.useState("")
+    var deviceName = route.params.deviceName
 
     return (
         <View style={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center' }}>
@@ -183,10 +256,8 @@ function NewDevicePage3({ navigation }) {
                 <TouchableOpacity
                     style={styles.fillButton}
                     onPress={async () => {
-                        navigation.navigate("Page4", {
-                            ssid: ssid,
-                            psk: psk
-                        })
+                       await setWifiForDevice(ssid, psk, deviceName)
+                       navigation.navigate('Page5')
                     }}
                 >
                     <View style={{ flexDirection: 'row' }}>
@@ -195,65 +266,6 @@ function NewDevicePage3({ navigation }) {
                     </View>
                 </TouchableOpacity>
             </View>
-        </View>
-    )
-}
-
-function NewDevicePage4({ navigation, route }) {
-
-    var ssid = route.params.ssid
-    var psk = route.params.psk
-    var [deviceName, changeName] = React.useState("")
-    var [errorShown, setErrorShown] = React.useState(false);
-    var [registerMessage, changeRegisterMessage] = React.useState("")
-    const username = useGlobalUsername();
-
-    return (
-        <View style={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center' }}>
-            <Image source={require('../../assets/humidifier.png')} style={{ width: 200, height: 200, marginBottom: 10, alignSelf: 'center' }} />
-            <CustomText style={{ textAlign: 'center', fontSize: 25, marginLeft: 10, marginRight: 10 }}>
-                Enter your new device's name.
-            </CustomText>
-            <View style={styles.contentMargin}>
-                <TextInput
-                    style={styles.textInput}
-                    onChangeText={changeName}
-                    value={deviceName}
-                    placeholder=" Device Name"
-                    placeholderTextColor='#000000'
-                />
-            </View>
-            <View style={styles.contentMargin}>
-                <TouchableOpacity
-                    style={styles.fillButton}
-                    onPress={async () => {
-                        var res = await registerNewDevice(deviceName, username)
-                        if (res != "Ok") {
-                            setErrorShown(true)
-                            changeRegisterMessage(res)
-                        }
-                        else {
-                            setErrorShown(false)
-                            await setWifiForDevice(ssid, psk)
-                            navigation.navigate('Page6')
-                        }
-                    }}
-                >
-                    <View style={{ flexDirection: 'row' }}>
-                        <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30, width: '90%' }]}>Next</CustomText>
-                        <CustomText style={[styles.fillButtonText, { fontSize: 30, justifyContent: 'flex-start', alignSelf: 'center', width: '10%' }]}>{'->'}</CustomText>
-                    </View>
-                </TouchableOpacity>
-            </View>
-            {
-                errorShown ? (
-                    <View style={styles.contentMargin}>
-                        <CustomText style={{ alignSelf: 'center', color: "#ff0000", fontSize: 18, textAlign: 'center' }}>
-                            {registerMessage}
-                        </CustomText>
-                    </View>
-                ) : null
-            }
         </View>
     )
 }
@@ -276,7 +288,7 @@ function NewDevicePage5({ navigation }) {
                 <View style={styles.contentMargin}>
                     <TouchableOpacity
                         style={styles.fillButton}
-                        onPress={() => navigation.navigate('Page2')}
+                        onPress={() => navigation.navigate('Page3')}
                     >
                         <View style={{ flexDirection: 'row' }}>
                             <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30 }]}>Retry</CustomText>
@@ -286,7 +298,7 @@ function NewDevicePage5({ navigation }) {
                 <View style={styles.contentMargin}>
                     <TouchableOpacity
                         style={localStyles.nextFillButton}
-                        onPress={() => navigation.navigate('Page5') /* navigation.navigate('Page6')*/}
+                        onPress={() => navigation.navigate('Page7') /* navigation.navigate('Page6')*/}
                     >
                         <View style={{ flexDirection: 'row' }}>
                             <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30 }]}>Next</CustomText>
