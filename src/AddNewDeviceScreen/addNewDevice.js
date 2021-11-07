@@ -207,7 +207,7 @@ function NewDevicePage3({ navigation, route }) {
             <View style={styles.contentMargin}>
                 <TouchableOpacity
                     style={styles.fillButton}
-                    onPress={() => navigation.navigate('Page3', {
+                    onPress={() => navigation.navigate('Page4', {
                         deviceName: deviceName
                     }) /* navigation.navigate('Page4')*/}
                 >
@@ -255,8 +255,8 @@ function NewDevicePage4({ navigation, route }) {
             <View style={styles.contentMargin}>
                 <TouchableOpacity
                     style={styles.fillButton}
-                    onPress={async () => {
-                       await setWifiForDevice(ssid, psk, deviceName)
+                    onPress={() => {
+                       setWifiForDevice(ssid, psk, deviceName)
                        navigation.navigate('Page5')
                     }}
                 >
@@ -298,7 +298,7 @@ function NewDevicePage5({ navigation }) {
                 <View style={styles.contentMargin}>
                     <TouchableOpacity
                         style={localStyles.nextFillButton}
-                        onPress={() => navigation.navigate('Page7') /* navigation.navigate('Page6')*/}
+                        onPress={() => navigation.navigate('Page6') /* navigation.navigate('Page6')*/}
                     >
                         <View style={{ flexDirection: 'row' }}>
                             <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30 }]}>Next</CustomText>
