@@ -10,6 +10,7 @@ import { AutomationsScreen } from './src/AutomationsScreen/automations'
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { useColorScheme, StatusBar, Platform, Dimensions } from 'react-native';
 import { ActiveDevice } from './src/ActiveDeviceScreen/activeDevice.js';
+import { NetworkStatus } from './src/noInternet.js';
 import AppLoading from 'expo-app-loading';
 import {
   useFonts,
@@ -22,6 +23,7 @@ import {
   Manrope_800ExtraBold,
 } from '@expo-google-fonts/manrope'
 import { NewDevice } from './src/AddNewDeviceScreen/addNewDevice.js';
+import { useNetInfo } from '@react-native-community/netinfo';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -29,6 +31,7 @@ const Drawer = createDrawerNavigator();
 export default function App() {
 
   const isLoggedIn = useGlobalIsLoggedIn()
+  const netInfo = useNetInfo();
 
   var [fontsLoaded] = useFonts({
     Manrope_200ExtraLight,
@@ -44,16 +47,26 @@ export default function App() {
     return <AppLoading />;
   }
 
-  return (
-    //isLoggedIn.isLoggedInVal ? (
-    //<LoggedInScreens />
-    //) : <NotLoggedInScreens />
-    <LoggedInScreens />
-  );
+  if (netInfo.isInternetReachable == false || netInfo.details.ssid == "Redworth-HUM-Spot") {
+    return (
+      <NetworkStatus />
+    )
+  }
+  else {
+    return (
+      //isLoggedIn.isLoggedInVal ? (
+      //<LoggedInScreens />
+      //) : <NotLoggedInScreens />
+      //<LoggedInScreens />
+      <NetworkStatus />
+    );
+  }
+  
 }
 
 export function NotLoggedInScreens() {
   const scheme = useColorScheme();
+
   return (
     <NavigationContainer theme={scheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack.Navigator headerMode="none">

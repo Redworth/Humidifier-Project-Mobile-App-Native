@@ -1,13 +1,12 @@
-import React, { useEffect, useCallback } from 'react'
-import { ScrollView, Pressable, Image, Dimensions, TouchableOpacity, View, StyleSheet, Appearance, TextInput } from 'react-native';
+import React from 'react';
+import { ScrollView, Pressable, Image, TouchableOpacity, View, StyleSheet, Appearance, TextInput } from 'react-native';
 import { CustomText } from '../customText'
-import { activeDeviceStyles } from '../styles.js';
 import axios from 'axios';
 import { useGlobalUsername } from '../currentUserName';
-import Slider from '@react-native-community/slider';
 import { styles } from '../styles.js';
 import { createStackNavigator } from '@react-navigation/stack';
-import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import { useNetInfo } from '@react-native-community/netinfo';
+
 
 const localStyles = StyleSheet.create({
     nextFillButton: {
@@ -138,8 +137,8 @@ function NewDevicePage2({ navigation }) {
         <ScrollView contentContainerStyle={[
             styles.container]}>
             <Image source={require('../../assets/humidifier.png')} style={{
-                width: 150, 
-                height: 150, 
+                width: 150,
+                height: 150,
                 marginBottom: 10,
                 alignSelf: 'center'
             }} />
@@ -182,7 +181,7 @@ function NewDevicePage2({ navigation }) {
             {
                 errorShown ? (
                     <View style={styles.contentMargin}>
-                        <CustomText style={{ alignSelf: 'center', color: "#ff0000"}}>
+                        <CustomText style={{ alignSelf: 'center', color: "#ff0000" }}>
                             {registerMessage}
                         </CustomText>
                     </View>
@@ -225,7 +224,13 @@ function NewDevicePage4({ navigation, route }) {
 
     var [ssid, changeSSID] = React.useState("")
     var [psk, changePSK] = React.useState("")
+    var [errorShown, setErrorShown] = React.useState(false);
+    var [sendMessage, changeSendMessage] = React.useState("")
+
+
     var deviceName = route.params.deviceName
+
+    const netInfo = useNetInfo();
 
     return (
         <View style={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center' }}>
@@ -256,8 +261,20 @@ function NewDevicePage4({ navigation, route }) {
                 <TouchableOpacity
                     style={styles.fillButton}
                     onPress={() => {
-                       setWifiForDevice(ssid, psk, deviceName)
-                       navigation.navigate('Page5')
+                        if (netInfo.type == "wifi") {
+                            if (netInfo.details.ssid == "Redworth-HUM-Spot") {
+                                setWifiForDevice(ssid, psk, deviceName)
+                                navigation.navigate('Page5')
+                            }
+                            else {
+                                setErrorShown(true)
+                                changeSendMessage("Are you sure you're on the right wifi network?")
+                            }
+                        }
+                        else {
+                            setErrorShown(true)
+                            changeSendMessage("Are you sure you're on the right wifi network?")
+                        }
                     }}
                 >
                     <View style={{ flexDirection: 'row' }}>
@@ -266,6 +283,15 @@ function NewDevicePage4({ navigation, route }) {
                     </View>
                 </TouchableOpacity>
             </View>
+            {
+                errorShown ? (
+                    <View style={styles.contentMargin}>
+                        <CustomText style={{ textAlign: 'center', color: "#ff0000" }}>
+                            {sendMessage}
+                        </CustomText>
+                    </View>
+                ) : null
+            }
         </View>
     )
 }

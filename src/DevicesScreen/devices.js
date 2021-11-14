@@ -40,13 +40,13 @@ export function DevicesScreen({ navigation }) {
     }
     else {
         return (
-            <View>
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
                 <ScrollView contentContainerStyle={{ 
                     display: "flex", 
                     flexDirection: 'row', 
                     flexWrap: 'wrap', 
-                    height: '100%', 
-                    backgroundColor: 'white'  
+                    backgroundColor: 'white',
+                    flexGrow: 1
                 }}>
                     {
                         Object.keys(jsonData.data).map((key, index) => {
