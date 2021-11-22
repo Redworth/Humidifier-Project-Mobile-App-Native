@@ -4,6 +4,9 @@ import { devicesPageStyles } from '../styles.js';
 import { CustomText } from '../customText'
 import axios from 'axios';
 import { useGlobalUsername } from '../currentUserName.js';
+import { useNetInfo } from '@react-native-community/netinfo';
+import { NetworkStatus } from '../noInternet.js';
+
 
 export function DevicesScreen({ navigation }) {
 
@@ -11,6 +14,7 @@ export function DevicesScreen({ navigation }) {
     var [getComplete, setGetComplete] = React.useState(false)
 
     const username = useGlobalUsername();
+    const netInfo = useNetInfo();
 
     useEffect(() => {
         async function getDeviceInfo() {
@@ -37,6 +41,11 @@ export function DevicesScreen({ navigation }) {
 
     if (!getComplete) {
         return null;
+    }
+    else if (netInfo.isInternetReachable == false){
+        return (
+            <NetworkStatus />
+        )
     }
     else {
         return (

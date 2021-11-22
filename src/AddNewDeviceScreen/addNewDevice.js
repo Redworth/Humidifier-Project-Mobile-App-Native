@@ -48,8 +48,20 @@ async function registerNewDevice(deviceName, username) {
     else {
         return "Ok"
     }
-
 }
+
+async function checkIfConnected() {
+    const url = "http://10.0.0.5:8000"
+
+    const response = await axios.get(url)
+
+    if (response == "Success") {
+        return true
+    }
+
+    return false;
+}
+
 export function NewDevice() {
     return (
         <Stack.Navigator screenOptions={{
@@ -262,14 +274,12 @@ function NewDevicePage4({ navigation, route }) {
                     style={styles.fillButton}
                     onPress={() => {
                         if (netInfo.type == "wifi") {
-                            if (netInfo.details.ssid == "Redworth-HUM-Spot") {
-                                setWifiForDevice(ssid, psk, deviceName)
-                                navigation.navigate('Page5')
-                            }
-                            else {
-                                setErrorShown(true)
-                                changeSendMessage("Are you sure you're on the right wifi network?")
-                            }
+                            checkIfConnected().then((ans) => {
+                                if (ans == true) {
+                                    setWifiForDevice(ssid, psk, deviceName)
+                                    navigation.navigate('Page5')
+                                }
+                            })
                         }
                         else {
                             setErrorShown(true)

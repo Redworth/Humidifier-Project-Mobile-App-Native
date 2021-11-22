@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { SignUpScreen } from './src/SignUpScreen/signUp.js'
 import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute } from '@react-navigation/native';
@@ -46,22 +46,13 @@ export default function App() {
   if (!fontsLoaded) {
     return <AppLoading />;
   }
+  return (
+    //isLoggedIn.isLoggedInVal ? (
+    //<LoggedInScreens />
+    //) : <NotLoggedInScreens />
+    <LoggedInScreens />
+  );
 
-  if (netInfo.isInternetReachable == false || netInfo.details.ssid == "Redworth-HUM-Spot") {
-    return (
-      <NetworkStatus />
-    )
-  }
-  else {
-    return (
-      //isLoggedIn.isLoggedInVal ? (
-      //<LoggedInScreens />
-      //) : <NotLoggedInScreens />
-      //<LoggedInScreens />
-      <NetworkStatus />
-    );
-  }
-  
 }
 
 export function NotLoggedInScreens() {
@@ -137,7 +128,7 @@ export function DevicesScreens() {
       <Stack.Screen name="ActiveDevice" component={ActiveDevice} />
       <Stack.Screen name="NewDevice" component={NewDevice} options={{
         cardStyleInterpolator: Platform.OS == "ios" ? CardStyleInterpolators.forVerticalIOS : CardStyleInterpolators.forRevealFromBottomAndroid,
-       
+
       }} />
     </Stack.Navigator>
   )

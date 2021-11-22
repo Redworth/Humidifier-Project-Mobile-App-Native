@@ -16,7 +16,10 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.redworth.redworth"
+      "bundleIdentifier": "com.redworth.redworth",
+      "entitlements": {
+        "com.apple.developer.networking.wifi-info": "true"
+      }
     },
     "android": {
       "adaptiveIcon": {
