@@ -1,7 +1,7 @@
 import React from 'react';
 import { ScrollView, Pressable, Image, TouchableOpacity, View, StyleSheet, Appearance, TextInput } from 'react-native';
 import { CustomText } from '../customText'
-import axios from 'axios';
+import axios, { CancelToken } from 'axios';
 import { useGlobalUsername } from '../currentUserName';
 import { styles } from '../styles.js';
 import { createStackNavigator } from '@react-navigation/stack';
@@ -30,11 +30,12 @@ async function setWifiForDevice(ssid, psk, hostname) {
     await axios.post(url, postData)
 }
 
-async function registerNewDevice(deviceName, username) {
+async function registerNewDevice(deviceName, username, toRegister) {
     const url = "http://gitpod-machine.eastus.cloudapp.azure.com:8000/register-device"
     const postData = {
         "new_device_name": deviceName,
-        "username": /*username*/ "rohit"
+        "username": /*username*/ "rohit",
+        "register": toRegister,
     }
 
     const response = await axios.post(url, postData)
@@ -50,16 +51,8 @@ async function registerNewDevice(deviceName, username) {
     }
 }
 
-async function checkIfConnected() {
-    const url = "http://10.0.0.5:8000"
+function checkIfConnected() {
 
-    const response = await axios.get(url)
-
-    if (response == "Success") {
-        return true
-    }
-
-    return false;
 }
 
 export function NewDevice() {
@@ -170,7 +163,7 @@ function NewDevicePage2({ navigation }) {
                     style={styles.fillButton}
                     onPress={
                         async () => {
-                            var res = await registerNewDevice(deviceName, /*username*/ "rohit")
+                            var res = await registerNewDevice(deviceName, /*username*/ "rohit", "NO")
                             if (res != "Ok") {
                                 setErrorShown(true)
                                 changeRegisterMessage(res)
@@ -274,11 +267,28 @@ function NewDevicePage4({ navigation, route }) {
                     style={styles.fillButton}
                     onPress={() => {
                         if (netInfo.type == "wifi") {
-                            checkIfConnected().then((ans) => {
-                                if (ans == true) {
+                            const url = "http://10.0.0.5:8000"
+
+                            const source = CancelToken.source();
+                            const timeout = setTimeout(() => {
+                                source.cancel();
+                            }, 2000);
+                            axios.get(url, { cancelToken: source.token }).then((result) => {
+                                clearTimeout(timeout)
+                                if (result.data == "Success") {
                                     setWifiForDevice(ssid, psk, deviceName)
-                                    navigation.navigate('Page5')
+                                    navigation.navigate('Page5', {
+                                        deviceName: deviceName
+                                    })
                                 }
+                                else {
+                                    setErrorShown(true)
+                                    changeSendMessage("Are you sure you're on the right wifi network?")
+                                }
+                            }).catch((err) => {
+                                clearTimeout(timeout)
+                                setErrorShown(true)
+                                changeSendMessage("Are you sure you're on the right wifi network?")
                             })
                         }
                         else {
@@ -302,11 +312,17 @@ function NewDevicePage4({ navigation, route }) {
                     </View>
                 ) : null
             }
-        </View>
+        </View >
     )
 }
 
-function NewDevicePage5({ navigation }) {
+function NewDevicePage5({ navigation, route }) {
+    var [errorShown, setErrorShown] = React.useState(false);
+    var [errMessage, changeErrMessage] = React.useState("")
+
+    var deviceName = route.params.deviceName
+    const netInfo = useNetInfo();
+
     return (
         <ScrollView contentContainerStyle={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
             <CustomText style={{ textAlign: 'center', fontSize: 35, marginLeft: 10, marginRight: 10, marginBottom: 10 }}>
@@ -334,7 +350,17 @@ function NewDevicePage5({ navigation }) {
                 <View style={styles.contentMargin}>
                     <TouchableOpacity
                         style={localStyles.nextFillButton}
-                        onPress={() => navigation.navigate('Page6') /* navigation.navigate('Page6')*/}
+                        onPress={() => {
+                                if (netInfo.isInternetReachable) {
+                                    registerNewDevice(deviceName, /*username*/ "rohit", "YES")
+                                    navigation.navigate('Page6') /* navigation.navigate('Page6')*/
+                                }
+                                else {
+                                    setErrorShown(true)
+                                    changeErrMessage("Please connect to the internet to register your device with the cloud.")
+                                }
+                            }
+                        }
                     >
                         <View style={{ flexDirection: 'row' }}>
                             <CustomText style={[styles.fillButtonText, { alignSelf: 'flex-start', fontSize: 30 }]}>Next</CustomText>
@@ -342,7 +368,16 @@ function NewDevicePage5({ navigation }) {
                     </TouchableOpacity>
                 </View>
             </View>
-        </ScrollView>
+            {
+                errorShown ? (
+                    <View style={styles.contentMargin}>
+                        <CustomText style={{ textAlign: 'center', color: "#ff0000" }}>
+                            {errMessage}
+                        </CustomText>
+                    </View>
+                ) : null
+            }
+        </ScrollView >
     )
 }
 
