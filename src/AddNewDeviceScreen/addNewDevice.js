@@ -19,12 +19,13 @@ const Stack = createStackNavigator();
 
 const colorScheme = Appearance.getColorScheme()
 
-async function setWifiForDevice(ssid, psk, hostname) {
+async function setWifiForDevice(ssid, psk, hostname, username) {
     const url = "http://10.0.0.5:8000/connect-to-wifi"
     const postData = {
         "SSID": ssid,
         "Password": psk,
         "Hostname": hostname,
+        "Username": "rohit" // username
     }
 
     await axios.post(url, postData)
