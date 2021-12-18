@@ -59,7 +59,7 @@ export function DevicesScreen({ navigation }) {
                 }}>
                     {
                         Object.keys(jsonData.data).map((key, index) => {
-                            if (index % 2 == 0) {
+                            if (index % 2 == 0 && key != "Result") {
                                 return (
                                     <Pressable style={({ pressed }) => [
                                         devicesPageStyles.fillButton,
@@ -78,7 +78,7 @@ export function DevicesScreen({ navigation }) {
                                     </Pressable>
                                 );
                             }
-                            else {
+                            else if (index % 2 == 1 && key != "Result") {
                                 return (
                                     <Pressable style={({ pressed }) => [
                                         devicesPageStyles.fillButton,

@@ -19,12 +19,13 @@ const Stack = createStackNavigator();
 
 const colorScheme = Appearance.getColorScheme()
 
-async function setWifiForDevice(ssid, psk, hostname, username) {
+async function setWifiForDevice(ssid, psk, deviceName, username, hostname) {
     const url = "http://10.0.0.5:8000/connect-to-wifi"
     const postData = {
         "SSID": ssid,
         "Password": psk,
         "Hostname": hostname,
+        "Device Name": deviceName,
         "Username": "rohit" // username
     }
 
@@ -274,27 +275,30 @@ function NewDevicePage4({ navigation, route }) {
                             const timeout = setTimeout(() => {
                                 source.cancel();
                             }, 2000);
+                            const randString = Math.random().toString(36).substring(2,10);
+
                             axios.get(url, { cancelToken: source.token }).then((result) => {
                                 clearTimeout(timeout)
                                 if (result.data == "Success") {
-                                    setWifiForDevice(ssid, psk, deviceName)
+                                    setWifiForDevice(ssid, psk, deviceName, "", randString)
                                     navigation.navigate('Page5', {
                                         deviceName: deviceName
                                     })
                                 }
                                 else {
                                     setErrorShown(true)
-                                    changeSendMessage("Are you sure you're on the right wifi network?")
+                                    changeSendMessage("Are you sure you're on the right wifi network1?")
                                 }
                             }).catch((err) => {
                                 clearTimeout(timeout)
                                 setErrorShown(true)
-                                changeSendMessage("Are you sure you're on the right wifi network?")
+                                console.log("here")
+                                changeSendMessage("Are you sure you're on the right wifi network2?")
                             })
                         }
                         else {
                             setErrorShown(true)
-                            changeSendMessage("Are you sure you're on the right wifi network?")
+                            changeSendMessage("Are you sure you're on the right wifi network3?")
                         }
                     }}
                 >
