@@ -38,8 +38,8 @@ export function ActiveDevice({ navigation, route }) {
             //const url = "http://10.0.0.158:8000/get-devices-info"
             const url = "http://gitpod-machine.eastus.cloudapp.azure.com:8000/specific-device"
             const postData = {
-                //"username": username.username,
-                "username": "rohit",
+                "username": username.username,
+                //"username": "rohit",
                 "targetDevice": route.params.deviceName
             }
 

@@ -47,10 +47,10 @@ export default function App() {
     return <AppLoading />;
   }
   return (
-    //isLoggedIn.isLoggedInVal ? (
-    //<LoggedInScreens />
-    //) : <NotLoggedInScreens />
+    isLoggedIn.isLoggedInVal ? (
     <LoggedInScreens />
+    ) : <NotLoggedInScreens />
+    //<LoggedInScreens />
   );
 
 }

@@ -26,7 +26,7 @@ async function setWifiForDevice(ssid, psk, deviceName, username, hostname) {
         "Password": psk,
         "Hostname": hostname,
         "Device Name": deviceName,
-        "Username": "rohit" // username
+        "Username": username // "rohit" // 
     }
 
     await axios.post(url, postData)
@@ -36,7 +36,7 @@ async function registerNewDevice(deviceName, username, toRegister) {
     const url = "http://gitpod-machine.eastus.cloudapp.azure.com:8000/register-device"
     const postData = {
         "new_device_name": deviceName,
-        "username": /*username*/ "rohit",
+        "username": username, //"rohit",
         "register": toRegister,
     }
 
@@ -165,7 +165,7 @@ function NewDevicePage2({ navigation }) {
                     style={styles.fillButton}
                     onPress={
                         async () => {
-                            var res = await registerNewDevice(deviceName, /*username*/ "rohit", "NO")
+                            var res = await registerNewDevice(deviceName, username.username, "NO")
                             if (res != "Ok") {
                                 setErrorShown(true)
                                 changeRegisterMessage(res)
@@ -239,6 +239,8 @@ function NewDevicePage4({ navigation, route }) {
 
     const netInfo = useNetInfo();
 
+    const username = useGlobalUsername();
+
     return (
         <View style={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center' }}>
             <Image source={require('../../assets/wifi_icon.png')} style={{ width: 150, height: 150, marginBottom: 10, alignSelf: 'center' }} />
@@ -280,7 +282,7 @@ function NewDevicePage4({ navigation, route }) {
                             axios.get(url, { cancelToken: source.token }).then((result) => {
                                 clearTimeout(timeout)
                                 if (result.data == "Success") {
-                                    setWifiForDevice(ssid, psk, deviceName, "", randString)
+                                    setWifiForDevice(ssid, psk, deviceName, username.username, randString)
                                     navigation.navigate('Page5', {
                                         deviceName: deviceName
                                     })
@@ -327,6 +329,8 @@ function NewDevicePage5({ navigation, route }) {
 
     var deviceName = route.params.deviceName
     const netInfo = useNetInfo();
+    const username = useGlobalUsername();
+
 
     return (
         <ScrollView contentContainerStyle={{ backgroundColor: '#FFFFFF', flex: 1, justifyContent: 'center', alignItems: 'center' }}>
@@ -357,7 +361,7 @@ function NewDevicePage5({ navigation, route }) {
                         style={localStyles.nextFillButton}
                         onPress={() => {
                                 if (netInfo.isInternetReachable) {
-                                    registerNewDevice(deviceName, /*username*/ "rohit", "YES")
+                                    registerNewDevice(deviceName, username.username, "YES")
                                     navigation.navigate('Page6') /* navigation.navigate('Page6')*/
                                 }
                                 else {
