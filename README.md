@@ -4,10 +4,10 @@ This git repository contains the code for the mobile application of the IoT Humi
 
 ## Environment Setup
 Prerequisites:
-- Node.js (LTS or Current) installed. Make sure node is in $PATH.
-- Git installed.
-- Any editor that supports React Native development.
-- Expo Go mobile app (available on Android and iOS).
+- Node.js (LTS or Current) installed. Make sure node is in $PATH
+- Git installed
+- Any editor that supports React Native development
+- Expo Go mobile app (available on Android and iOS)
 
 Clone the git repository (https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository). Then create a feature branch (https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) to work on the code.
 
@@ -18,9 +18,9 @@ Next, run `npm install` to install packages defined in `package.json`.
 The environment is now ready for development.
 
 ## Usage
-Prerequsites:
-- Environment is setup (see above).
-- Development machine and mobile phone are connected to the same Wi-Fi network.
+Prerequisites:
+- Environment is setup (see above)
+- Development machine and mobile phone are connected to the same Wi-Fi network
 
 Run the command:
 ```
