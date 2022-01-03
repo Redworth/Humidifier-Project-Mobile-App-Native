@@ -83,13 +83,20 @@ export function SignUpScreen({ navigation }) {
                             setErrorShown(true)
                         }
                         else {
-                            signUpUser(userName, emailAddr, userPass)
-                            changeEmail("")
-                            changePassword("")
-                            changeName("")
-                            changeLogMessage("")
-                            setErrorShown(false)
-                            accessGlobalIsLoggedIn().setTrue()
+                            const res = await signUpUser(emailAddr, userPass, userName)
+
+                            if (res == "Ok") {
+                                changeEmail("")
+                                changePassword("")
+                                changeName("")
+                                changeLogMessage("")
+                                setErrorShown(false)
+                                accessGlobalIsLoggedIn().setTrue()
+                            }
+                            else {
+                                changeLogMessage(res)
+                                setErrorShown(true)
+                            }
                         }
                     }}
                 >
