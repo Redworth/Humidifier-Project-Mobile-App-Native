@@ -103,7 +103,7 @@ export function SignUpScreen({ navigation }) {
                     <CustomText style={styles.fillButtonText}>Sign Up</CustomText>
                 </TouchableOpacity>
             </View>
-            <View style={styles.contentMargin, { flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={[styles.contentMargin, { flexDirection: 'row', justifyContent: 'center' }]}>
                 <CustomText style={{ alignSelf: 'center', fontSize: 18 }}>
                     {string1}
                 </CustomText>

@@ -1,13 +1,23 @@
 import React, { useEffect } from 'react';
 import 'react-native-gesture-handler';
 import { SignUpScreen } from './src/SignUpScreen/signUp.js'
-import { NavigationContainer, DefaultTheme, DarkTheme, getFocusedRouteNameFromRoute } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+  getFocusedRouteNameFromRoute
+} from '@react-navigation/native';
 import { createStackNavigator, CardStyleInterpolators, TransitionPresets } from '@react-navigation/stack';
 import { LoginScreen } from './src/LoginScreen/login.js';
-import { useGlobalIsLoggedIn } from './src/loggedIn.js';
+import { accessGlobalIsLoggedIn, useGlobalIsLoggedIn } from './src/loggedIn.js';
 import { DevicesScreen } from './src/DevicesScreen/devices'
 import { AutomationsScreen } from './src/AutomationsScreen/automations'
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItemList,
+  DrawerItem,
+} from '@react-navigation/drawer';
 import { useColorScheme, StatusBar, Platform, Dimensions } from 'react-native';
 import { ActiveDevice } from './src/ActiveDeviceScreen/activeDevice.js';
 import { NetworkStatus } from './src/noInternet.js';
@@ -24,6 +34,10 @@ import {
 } from '@expo-google-fonts/manrope'
 import { NewDevice } from './src/AddNewDeviceScreen/addNewDevice.js';
 import { useNetInfo } from '@react-native-community/netinfo';
+import { TouchableOpacity } from 'react-native';
+import { CustomText } from './src/customText.js';
+import { logoutUser } from './src/api.js';
+import { View } from 'react-native'
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -48,7 +62,7 @@ export default function App() {
   }
   return (
     isLoggedIn.isLoggedInVal ? (
-    <LoggedInScreens />
+      <LoggedInScreens />
     ) : <NotLoggedInScreens />
     //<LoggedInScreens />
   );
@@ -108,7 +122,31 @@ export function LoggedInScreens() {
           fontFamily: 'Manrope_500Medium'
         },
         drawerActiveTintColor: "#FE0000",
-        drawerType: 'front'
+        drawerType: 'front',
+      }} drawerContent={props => {
+        return (
+          <DrawerContentScrollView {...props} contentContainerStyle={{
+            flex: 1,
+            justifyContent: 'space-between',
+            marginBottom: 10
+          }}>
+            <View>
+              <DrawerItemList {...props} />
+            </View>
+            <DrawerItem label="Logout" onPress={async () => {
+              await logoutUser()
+              accessGlobalIsLoggedIn().setFalse();
+            }} style={{
+              height: 50,
+              justifyContent: 'center',
+
+            }} labelStyle={{
+              fontFamily: 'Manrope_500Medium',
+              fontSize: 18,
+              color: "#FFFFFF",
+            }} inactiveBackgroundColor="#FE0000" />
+          </DrawerContentScrollView>
+        )
       }}>
         <Drawer.Screen name="Devices" component={DevicesScreens} options={({ route }) => ({
           headerShown: getVisible(route),

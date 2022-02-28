@@ -52,3 +52,8 @@ export async function loginUser(email, password) {
         }
     }
 }
+
+export async function logoutUser() {
+    await firebaseConn.auth().signOut()
+    return "Ok"
+}

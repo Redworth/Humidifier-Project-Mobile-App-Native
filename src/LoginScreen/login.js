@@ -96,7 +96,7 @@ export function LoginScreen({navigation}) {
                     <CustomText style={styles.fillButtonText}>Log In</CustomText>
                 </TouchableOpacity>
             </View>
-            <View style={styles.contentMargin, { flexDirection: 'row', justifyContent: 'center' }}>
+            <View style={[styles.contentMargin, { flexDirection: 'row', justifyContent: 'center' }]}>
                 <CustomText style={{ alignSelf: 'center', fontSize: 18 }}>
                     {string1}
                 </CustomText>
